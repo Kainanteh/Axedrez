@@ -4,15 +4,36 @@ using UnityEngine;
 
 public class UnidadMovimiento : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    [System.Serializable]public struct Movimiento
     {
-        
+        public Celda cinicio;
+        public Celda cobjetivo;
+
+        public Movimiento(Celda cinicio, Celda cobjetivo) : this()
+        {
+            this.cinicio = cinicio;
+            this.cobjetivo = cobjetivo;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] List<Movimiento> movimientos;
+
+    void Start()
+    {
+
+        movimientos = new List<Movimiento>();
+
+
+    }
+
+    public List<Movimiento> GenerarMovimiento(Celda cinicio, Celda cobjetivo)
     {
         
+        movimientos.Add(new Movimiento(cinicio,cobjetivo));
+
+        return movimientos;
+
     }
+
 }

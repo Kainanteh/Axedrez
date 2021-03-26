@@ -9,11 +9,16 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
     public int columna;
     public int fila;
 
- 
+    [SerializeField] UnidadMovimiento unidadMovimiento;
 
     [SerializeField] Unidad unidadEnCelda = null;
 
+    void Awake()
+    {
 
+        unidadMovimiento = GameObject.Find("Cuadricula").GetComponent<UnidadMovimiento>();
+
+    }
 
     public Unidad GetUnidadEnCelda()
     {
@@ -41,9 +46,10 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
                 return;
             }
 
-            Debug.Log("Click en " + hitInfo.transform.gameObject.name);
+            // Debug.Log("Click en " + hitInfo.transform.gameObject.name);
 
-        
+            unidadEnCelda.gameObject.transform.position = transform.position;
+            
 
 
     }
@@ -59,9 +65,10 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
         }
 
 
-        /*if(unidadEnCelda == null){return;}
+        if(unidadEnCelda == null){return;}
 
-        unidadEnCelda.gameObject.transform.position = hitInfo.transform.position;*/
+        unidadEnCelda.gameObject.transform.position = new Vector3(hitInfo.point.x,hitInfo.point.y,0f);
+        //unidadEnCelda.gameObject.transform.localPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y,0f);
         
         
         //Debug.Log("Arrastar en " + hitInfo.transform.gameObject.name);
@@ -78,10 +85,10 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
                 return;
             }
 
-        /*if(unidadEnCelda == null){return;}
+        if(unidadEnCelda == null){return;}
 
-        unidadEnCelda.gameObject.transform.position = hitInfo.transform.position;*/
-        
+        unidadEnCelda.gameObject.transform.position = new Vector3(hitInfo.point.x,hitInfo.point.y,0f);
+        //unidadEnCelda.gameObject.transform.localPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y,0f);
         
     }
 
@@ -96,24 +103,26 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
                 return;
             }
 
-            /*Celda unidadceldasoltar = hitInfo.transform.gameObject.GetComponent<Celda>();
-            //Unidad unidadselecsoltar = unidadceldasoltar.GetUnidadEnCelda();
+            Celda unidadceldasoltar = hitInfo.transform.gameObject.GetComponent<Celda>();
+            Unidad unidadselecsoltar = unidadceldasoltar.GetUnidadEnCelda();
 
-            if(GetUnidadEnCelda() == null){return;} // Si esta celda no tiene unidad
-            //if(unidadselecsoltar != null){return;}        // Si la celda donde sueltas ya tiene unidad
-
+            if(GetUnidadEnCelda() == null){return;}     // Si esta celda no tiene unidad
             
+            
+            if(unidadselecsoltar != null){return;}      // Si la celda donde sueltas ya tiene unidad POSIBLE ATAQUE
+
+                                                        // Si no hay nadie movimiento?
             
 
             int movcolum = 999;
             int movfila = 999;
 
-            movcolum = columna - unidadceldasoltar.columna;
-            movfila = fila - unidadceldasoltar.fila;
+            movcolum = unidadceldasoltar.columna - columna;
+            movfila = unidadceldasoltar.fila - fila;
 
             //Debug.Log("Soltar en " + hitInfo.transform.gameObject.name);
 
-            if(movcolum == 999 || movfila == 999)
+            if(movcolum == 999 || movfila == 999){return;}
 
             switch(unidadEnCelda.GetTipoUnidad())
             {
@@ -174,6 +183,21 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
                             break;
                         }
                 }
+                case TipoUnidad.Reina:
+                {
+                   
+                    //if(movcolum!=0 && (movfila>0 || movfila<0) || (movcolum>0 || movcolum<0) && movfila!=0){// Limite para la torre
+                    
+                        if(true)
+                        {
+                            //Debug.Log(" movfila " + movfila + " movcolum " + movcolum + " columna " + columna + " fila " + fila);
+                            unidadceldasoltar.SetUnidadEnCelda(unidadEnCelda); // La celda donde muevo la unidad ahora tiene esa unidad
+                            unidadEnCelda = null; // Esta celda ya no tiene unidad
+                            unidadMovimiento.GenerarMovimiento(this,unidadceldasoltar);
+                            break;
+                        }
+                    
+                }
                 default:
                 {
 
@@ -187,12 +211,13 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
             }
 
             
+                Debug.Log("movimiento COLUMNA " + movcolum + " movimiento FILA " + movfila + " ");
 
-                /*if(movcolum > 0){Debug.Log("Te has movido hacia izquierda " + movcolum + " casillas");}
-                else if (movcolum < 0){Debug.Log("Te has movido hacia derecha " + movcolum*-1 + " casillas");}
+                // if(movcolum > 0){Debug.Log("Te has movido hacia izquierda " + movcolum + " casillas");}
+                // else if (movcolum < 0){Debug.Log("Te has movido hacia derecha " + movcolum + " casillas");}
 
-                if(movfila > 0){Debug.Log("Te has movido hacia abajo " + movfila + " casillas");}
-                else if (movfila < 0){Debug.Log("Te has movido hacia arriba " + movfila*-1 + " casillas");}*/
+                // if(movfila > 0){Debug.Log("Te has movido hacia abajo " + movfila + " casillas");}
+                // else if (movfila < 0){Debug.Log("Te has movido hacia arriba " + movfila + " casillas");}
 
             
        
@@ -203,6 +228,7 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
             Vector2 pos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             RaycastHit2D hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(pos), Vector2.zero);
+            
             
             return hitInfo;
 

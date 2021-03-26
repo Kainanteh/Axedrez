@@ -11,7 +11,7 @@ public class Cuadricula : MonoBehaviour
 	public int filas = 6;
 
 	public Celda celdaPrefab;
-    Celda[] celdas;
+    [SerializeField] Celda[] celdas;
 
 	public TextMeshProUGUI celdaEtiquetaPrefab;
 
@@ -22,7 +22,8 @@ public class Cuadricula : MonoBehaviour
 	public Color32 ColorNegras;
 	public Color32 ColorBlancas;
 
-	void Awake () {
+	void Awake () 
+	{
 
 		
 
