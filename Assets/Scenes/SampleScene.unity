@@ -496,7 +496,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
       propertyPath: tipoUnidad
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
       propertyPath: milayer.m_Bits
@@ -595,6 +595,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1912698012}
   - component: {fileID: 1912698011}
+  - component: {fileID: 1912698013}
   m_Layer: 0
   m_Name: Cuadricula
   m_TagString: Untagged
@@ -614,15 +615,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2791ae3bdcd3b2c4f89b9ab479e0d8de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  columnas: 5
+  columnas: 7
   filas: 5
   celdaPrefab: {fileID: 2899227230694216579, guid: 615435f4d83b4c645aa3f69a4bb6504c, type: 3}
+  celdas: []
   celdaEtiquetaPrefab: {fileID: 7437438301819996252, guid: caa0d3af7bd621a4ca549b46e7110e01, type: 3}
   cuadriculaCanvas: {fileID: 43358829}
   Limite: {fileID: 181236685}
   ColorNegras:
     serializedVersion: 2
-    rgba: 4282280080
+    rgba: 4282282384
   ColorBlancas:
     serializedVersion: 2
     rgba: 4284654046
@@ -641,3 +643,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1912698013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912698010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4642cab9b32ea8b4cacfa80b82632754, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movimientos: []
