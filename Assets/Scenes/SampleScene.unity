@@ -496,7 +496,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
       propertyPath: tipoUnidad
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
       propertyPath: milayer.m_Bits
