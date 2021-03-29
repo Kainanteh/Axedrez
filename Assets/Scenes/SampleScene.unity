@@ -615,8 +615,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2791ae3bdcd3b2c4f89b9ab479e0d8de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  columnas: 7
-  filas: 5
+  filas: 8
+  columnas: 8
   celdaPrefab: {fileID: 2899227230694216579, guid: 615435f4d83b4c645aa3f69a4bb6504c, type: 3}
   celdas: []
   celdaEtiquetaPrefab: {fileID: 7437438301819996252, guid: caa0d3af7bd621a4ca549b46e7110e01, type: 3}

@@ -18,7 +18,7 @@ public class Unidad : MonoBehaviour
     private void Start()
     {
 
-       GameObject.Find("Celda 2 2").GetComponent<Celda>().SetUnidadEnCelda(this);
+       GameObject.Find("Celda 3 3").GetComponent<Celda>().SetUnidadEnCelda(this);
 
     }
 

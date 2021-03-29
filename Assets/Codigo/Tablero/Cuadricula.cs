@@ -7,11 +7,16 @@ using UnityEngine;
 public class Cuadricula : MonoBehaviour
 {
 
-    public int columnas = 6;
 	public int filas = 6;
+    public int columnas = 6;
+	
+	
+
 
 	public Celda celdaPrefab;
-    [SerializeField] Celda[] celdas;
+    public Celda[] celdas;
+
+	
 
 	public TextMeshProUGUI celdaEtiquetaPrefab;
 
@@ -22,9 +27,17 @@ public class Cuadricula : MonoBehaviour
 	public Color32 ColorNegras;
 	public Color32 ColorBlancas;
 
+	public Celda[] GetCeldas()
+	{
+
+		return celdas;
+
+	}
+
 	void Awake () 
 	{
 
+		
 		
 
 		cuadriculaCanvas.transform.position = new Vector2(((float)(columnas-1)/2)*-1,((float)(filas-1)/2)*-1); // Para centrar la cuadricula
@@ -45,15 +58,17 @@ public class Cuadricula : MonoBehaviour
 	void CrearCelda (int x, int y, int i) 
 	{
 		Vector2 position;
-		position.x = x * 1f;
 		position.y = y * 1f;
+		position.x = x * 1f;
+		
 
 		Celda celda = celdas[i] = Instantiate<Celda>(celdaPrefab);
 		celda.transform.SetParent(cuadriculaCanvas.transform, false);
 		celda.transform.localPosition = position;
-		celda.gameObject.name = "Celda " + x.ToString() + " " + y.ToString(); 
-		celda.columna = x;
+		celda.gameObject.name = "Celda " + y.ToString() + " " + x.ToString(); 
 		celda.fila = y;
+		celda.columna = x;
+		
 
 		if((x + y)%2 == 0 ) // Si es par color "negro" si es impar color "blanco"
 		{
@@ -76,7 +91,7 @@ public class Cuadricula : MonoBehaviour
 		etiqueta.rectTransform.SetParent(celda.transform, false); // Padre la Celda
 		//etiqueta.rectTransform.anchoredPosition =
 		//	new Vector2(cuadriculaCanvas.transform.position.x, cuadriculaCanvas.transform.position.y);
-		etiqueta.text = x.ToString() + " " + y.ToString();
+		etiqueta.text = y.ToString() + " " + x.ToString();
 
 	}
 
