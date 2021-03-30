@@ -7,7 +7,7 @@ public class UnidadMovimiento : MonoBehaviour
     
     Cuadricula cuadricula;
 
-    public enum Direccion {Norte,NorEste,Este,SurEste,Sur,SurOeste,Oeste,NorOeste}
+    
 
     [System.Serializable]public struct Movimiento
     {
@@ -33,7 +33,7 @@ public class UnidadMovimiento : MonoBehaviour
 
     }
 
-    public bool GenerarMovimiento(TipoUnidad tipo, Celda cinicio, Celda cobjetivo)
+    public bool GenerarMovimiento(Unidad unidad, Celda cinicio, Celda cobjetivo)
     {
         
         movimientos.Add(new Movimiento(cinicio,cobjetivo));
@@ -49,16 +49,13 @@ public class UnidadMovimiento : MonoBehaviour
 
         Debug.Log("movimiento COLUMNA " + movcolum + " movimiento FILA " + movfila + " ");
 
-        switch(tipo)
+        switch(unidad.GetTipoUnidad())
         {
             case TipoUnidad.Peon:
             {
 
-                 List<Direccion> direccionPeon = new List<Direccion>();
-                
-                direccionPeon.Add(Direccion.Norte);
-
-                if(DireccionUnidad(cobjetivo,cinicio,direccionPeon))
+               
+                if(DireccionUnidad(cobjetivo,cinicio,unidad.limiteDirMov ))
                 {
 
                     //Debug.Log(" movfila " + movfila + " movcolum " + movcolum + " columna " + columna + " fila " + fila);
@@ -78,20 +75,9 @@ public class UnidadMovimiento : MonoBehaviour
             case TipoUnidad.Reina:
             {
                    
-                    //if(movcolum!=0 && (movfila>0 || movfila<0) || (movcolum>0 || movcolum<0) && movfila!=0){// Limite para la torre
-                              List<Direccion> direccionReina = new List<Direccion>();
-                
-                        direccionReina.Add(Direccion.Norte);
-                        direccionReina.Add(Direccion.Este);
-                        direccionReina.Add(Direccion.Sur);
-                        direccionReina.Add(Direccion.Oeste);
-                        direccionReina.Add(Direccion.NorEste);
-                        direccionReina.Add(Direccion.NorOeste);
-                        direccionReina.Add(Direccion.SurEste);
-                        direccionReina.Add(Direccion.SurOeste);
+                                    
                     
-                    
-                if(DireccionUnidad(cobjetivo,cinicio,direccionReina))
+                if(DireccionUnidad(cobjetivo,cinicio,unidad.limiteDirMov ))
                 {
 
                     //Debug.Log(" movfila " + movfila + " movcolum " + movcolum + " columna " + columna + " fila " + fila);
@@ -124,81 +110,75 @@ public class UnidadMovimiento : MonoBehaviour
 
     }
 
-    public void CalculoMovimiento(TipoUnidad tipo, Celda cinicio)
+    public void CalculoMovimiento(Unidad unidad, Celda cinicio, int movfila, int movcolum)
     {
-
-        //Debug.Log(Cuadricula.filas + " " + Cuadricula.columnas);
 
         Celda[] celdas = cuadricula.GetCeldas();
 
         for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
 		{
-			
-
-            switch(tipo)
-            {
-                case TipoUnidad.Peon:
-                {
-
-                    List<Direccion> direccionPeon = new List<Direccion>();
-                
-                        direccionPeon.Add(Direccion.Norte);
-                                            
-                    DireccionUnidad(celdas[i],cinicio,direccionPeon);
-                   
-                    break;
-                }
-                case TipoUnidad.Reina:
-                {
-
-                    List<Direccion> direccionReina = new List<Direccion>();
-                
-                        direccionReina.Add(Direccion.Norte);
-                        direccionReina.Add(Direccion.Este);
-                        direccionReina.Add(Direccion.Sur);
-                        direccionReina.Add(Direccion.Oeste);
-                        direccionReina.Add(Direccion.NorEste);
-                        direccionReina.Add(Direccion.NorOeste);
-                        direccionReina.Add(Direccion.SurEste);
-                        direccionReina.Add(Direccion.SurOeste);
-                    
-                    DireccionUnidad(celdas[i],cinicio,direccionReina);
-                   
-                    break;
-                }
-
-            }
-            
-        //Debug.Log(celda.gameObject.name);
+			                                           
+            DireccionUnidad(celdas[i],cinicio,unidad.limiteDirMov );
+                 
         }
 
     }
 
-    bool DireccionUnidad(Celda celda, Celda celdainicio, List<Direccion> direcciones)
+    //bool DireccionUnidad(Celda celda, Celda celdainicio, List<Direccion> direcciones, int movfila, int movcolum)
+    bool DireccionUnidad(Celda celda, Celda celdainicio, List<Unidad.limiteDireccionMovimiento> limDirMov)
     {
 
         //Debug.Log(celda.gameObject.name + " " + celdainicio.gameObject.name + " " + direcciones);
 
-        if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) == 0 && direcciones.Contains(Direccion.Norte))       // Norte
-        {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
-        if(celda.fila - celdainicio.fila < 0  && (celda.columna - celdainicio.columna) == 0  && direcciones.Contains(Direccion.Sur))   // Sur
-        {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
-        if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) > 0 && direcciones.Contains(Direccion.Este))   // Este
-        {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
-        if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) < 0 && direcciones.Contains(Direccion.Oeste))  // Oeste
-        {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
-        if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) < 0 
-        && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna)*-1  && direcciones.Contains(Direccion.NorOeste))          // NorOeste
-        {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
-        if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) > 0 
-        && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna) && direcciones.Contains(Direccion.NorEste))               // NorEste
-        {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
-        if(celda.fila - celdainicio.fila < 0  && (celda.columna - celdainicio.columna) < 0 
-        && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna) && direcciones.Contains(Direccion.SurOeste))              // SurOeste
-        {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
-        if(celda.fila - celdainicio.fila < 0  && (celda.columna - celdainicio.columna) > 0 
-        && (celda.fila - celdainicio.fila)*-1==(celda.columna - celdainicio.columna) && direcciones.Contains(Direccion.SurEste))            // SurEste
-        {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
+        for (int i = 0; i < limDirMov.Count; i++)
+        {
+            
+
+            // LIMITES DE MOVIMIENTO
+            if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) == 0 // La celda objetivo es Norte respecto a la celda inicial
+                && limDirMov[i].direccionUnidad == Direccion.Norte                              // Norte
+                && (celda.fila-celdainicio.fila)<=limDirMov[i].limiteMovimiento )               // Limite Movimiento       
+                    {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
+            if(celda.fila - celdainicio.fila < 0  && (celda.columna - celdainicio.columna) == 0  
+                && limDirMov[i].direccionUnidad == Direccion.Sur                                // Sur
+                && (celdainicio.fila-celda.fila)<=limDirMov[i].limiteMovimiento )        
+                    {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
+            if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) > 0 
+                && limDirMov[i].direccionUnidad == Direccion.Este                               // Este
+                && (celda.columna-celdainicio.columna)<=limDirMov[i].limiteMovimiento)       
+                    {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
+            if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) < 0 
+                && limDirMov[i].direccionUnidad == Direccion.Oeste                              // Oeste
+                && (celdainicio.columna-celda.columna)<=limDirMov[i].limiteMovimiento)       
+                    {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
+            if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) < 0 
+                && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna)*-1  
+                && limDirMov[i].direccionUnidad == Direccion.NorOeste                           // NorOeste
+                && (celdainicio.fila-celda.fila)<=limDirMov[i].limiteMovimiento
+                && (celdainicio.columna-celda.columna)<=limDirMov[i].limiteMovimiento)    
+                    {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
+            if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) > 0 
+                && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna) 
+                && limDirMov[i].direccionUnidad == Direccion.NorEste                            // NorEste
+                && (celda.fila-celdainicio.fila)<=limDirMov[i].limiteMovimiento
+                && (celda.columna-celdainicio.columna)<=limDirMov[i].limiteMovimiento)            
+                    {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
+            if(celda.fila - celdainicio.fila < 0  
+                && (celda.columna - celdainicio.columna) < 0 
+                && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna) 
+                && limDirMov[i].direccionUnidad == Direccion.SurOeste                           // SurOeste
+                && (celdainicio.fila-celda.fila)<=limDirMov[i].limiteMovimiento
+                && (celdainicio.columna-celda.columna)<=limDirMov[i].limiteMovimiento)    
+                    {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
+            if(celda.fila - celdainicio.fila < 0  
+                && (celda.columna - celdainicio.columna) > 0 
+                && (celda.fila - celdainicio.fila)*-1==(celda.columna - celdainicio.columna) 
+                && limDirMov[i].direccionUnidad == Direccion.SurEste                            // SurEste
+                && (celda.fila-celdainicio.fila)<=limDirMov[i].limiteMovimiento
+                && (celda.columna-celdainicio.columna)<=limDirMov[i].limiteMovimiento)             
+                    {celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;return true;}
+
+        }
 
         return false;
     }

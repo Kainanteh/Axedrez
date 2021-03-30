@@ -495,6 +495,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 43358827}
     m_Modifications:
     - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: lMD.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
       propertyPath: tipoUnidad
       value: 0
       objectReference: {fileID: 0}
@@ -505,6 +513,70 @@ PrefabInstance:
     - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
       propertyPath: layerUnidad.m_Bits
       value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: movimientocolumna
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[1].direccionUnidad
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[2].direccionUnidad
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[3].direccionUnidad
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[4].direccionUnidad
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[5].direccionUnidad
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[6].direccionUnidad
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[7].direccionUnidad
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[0].limiteMovimiento
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[1].limiteMovimiento
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[7].limiteMovimiento
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[6].limiteMovimiento
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[2].limiteMovimiento
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[3].limiteMovimiento
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[4].limiteMovimiento
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirMov.Array.data[5].limiteMovimiento
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2441506605888127508, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
       propertyPath: m_Name
@@ -578,6 +650,10 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8990208582316684390, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
 --- !u!4 &1383011113 stripped
@@ -615,8 +691,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2791ae3bdcd3b2c4f89b9ab479e0d8de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filas: 8
-  columnas: 8
+  filas: 9
+  columnas: 16
   celdaPrefab: {fileID: 2899227230694216579, guid: 615435f4d83b4c645aa3f69a4bb6504c, type: 3}
   celdas: []
   celdaEtiquetaPrefab: {fileID: 7437438301819996252, guid: caa0d3af7bd621a4ca549b46e7110e01, type: 3}

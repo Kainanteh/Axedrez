@@ -71,7 +71,11 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
         unidadEnCelda.gameObject.transform.position = new Vector3(hitInfo.point.x,hitInfo.point.y,0f);
         //unidadEnCelda.gameObject.transform.localPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y,0f);
-        unidadMovimiento.CalculoMovimiento( unidadEnCelda.GetTipoUnidad(),this);
+
+            
+
+        //unidadMovimiento.CalculoMovimiento( unidadEnCelda.GetTipoUnidad(),this,unidadEnCelda.movimientofila,unidadEnCelda.movimientocolumna);
+        unidadMovimiento.CalculoMovimiento( unidadEnCelda,this,1,1);
         
         //Debug.Log("Arrastar en " + hitInfo.transform.gameObject.name);
 
@@ -131,7 +135,7 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
             // if(movcolum == 999 || movfila == 999){return;}
 
 
-            if(unidadMovimiento.GenerarMovimiento(unidadEnCelda.GetTipoUnidad(),this,unidadceldasoltar))
+            if(unidadMovimiento.GenerarMovimiento(unidadEnCelda,this,unidadceldasoltar))
             {
 
 
