@@ -48,6 +48,8 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
                 return;
             }
 
+            if(unidadEnCelda == null){return;}
+
             // Debug.Log("Click en " + hitInfo.transform.gameObject.name);
 
             unidadEnCelda.gameObject.transform.position = transform.position;
@@ -75,7 +77,7 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
             
 
         //unidadMovimiento.CalculoMovimiento( unidadEnCelda.GetTipoUnidad(),this,unidadEnCelda.movimientofila,unidadEnCelda.movimientocolumna);
-        unidadMovimiento.CalculoMovimiento( unidadEnCelda,this,1,1);
+        unidadMovimiento.CalculoMovimiento( unidadEnCelda,this);
         
         //Debug.Log("Arrastar en " + hitInfo.transform.gameObject.name);
 
@@ -119,7 +121,9 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
             if(GetUnidadEnCelda() == null){return;}     // Si esta celda no tiene unidad
             
             
-            if(unidadselecsoltar != null){return;}      // Si la celda donde sueltas ya tiene unidad POSIBLE ATAQUE
+            if(this == unidadceldasoltar){return;}      // Si sueltas en la misma celda
+
+            //if(unidadselecsoltar != null){return;}      // Si la celda donde sueltas ya tiene unidad POSIBLE ATAQUE
 
                                                         // Si no hay nadie movimiento?
             
@@ -144,7 +148,7 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
             else
             {
 
-
+                
 
             }
 

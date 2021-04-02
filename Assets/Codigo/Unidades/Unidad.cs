@@ -6,8 +6,11 @@ using UnityEngine.EventSystems;
 public enum TipoUnidad {Peon,Torre,Caballo,Alfil,Reina,Rey};
 public enum Direccion {Norte,NorEste,Este,SurEste,Sur,SurOeste,Oeste,NorOeste}
 
+
 public class Unidad : MonoBehaviour
 {
+
+    public string celdaIniciost;
 
     // [SerializeField] private UnidadMovimiento unidadMovimiento = null;
 
@@ -42,9 +45,9 @@ public class Unidad : MonoBehaviour
 
     private void Start()
     {
-
-       GameObject.Find("Celda 3 7").GetComponent<Celda>().SetUnidadEnCelda(this);
-         //limiteMovimientosDireccion = new Dictionary<string, int>();
+        //"Celda 3 7"
+       GameObject.Find(celdaIniciost).GetComponent<Celda>().SetUnidadEnCelda(this);
+    
     }
 
     public Unidad GetUnidad()
