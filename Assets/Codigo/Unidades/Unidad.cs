@@ -12,25 +12,9 @@ public class Unidad : MonoBehaviour
 
     public string celdaIniciost;
 
-    // [SerializeField] private UnidadMovimiento unidadMovimiento = null;
 
-    
-    // [SerializeField] LayerMask layerUnidad;
     
     [SerializeField] TipoUnidad tipoUnidad; 
-
-
-    // public int movimientofila = 1;
-    // public int movimientocolumna = 1;
-
-    // public int movimientoNorte = 1;
-    // public int movimientoNorEste = 1;
-    // public int movimientoEste = 1;
-    // public int movimientoSurEste = 1;
-    // public int movimientoSur = 1;
-    // public int movimientoSurOeste = 1;
-    // public int movimientoOeste = 1;
-    // public int movimientoNorOeste = 1;
 
     
 

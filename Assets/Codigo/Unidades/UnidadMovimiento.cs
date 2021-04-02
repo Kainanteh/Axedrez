@@ -33,7 +33,7 @@ public class UnidadMovimiento : MonoBehaviour
 
     }
 
-    public bool GenerarMovimiento(Unidad unidad, Celda cinicio, Celda cobjetivo)
+    public bool GenerarMovimiento(Unidad unidad, Celda cinicio, Celda cobjetivo, bool ataque)
     {
         
         
@@ -58,6 +58,7 @@ public class UnidadMovimiento : MonoBehaviour
                 if(DireccionUnidad(cobjetivo,cinicio,unidad.limiteDirMov,false ))
                 {
 
+                    if(ataque == true){cobjetivo.GetUnidadEnCelda().gameObject.SetActive(false);cobjetivo.SetUnidadEnCelda(null);}
                     cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                     cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
                     movimientos.Add(new Movimiento(cinicio,cobjetivo));
