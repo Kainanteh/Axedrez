@@ -19,10 +19,17 @@ public class Unidad : MonoBehaviour
     
 
     [System.Serializable] 
-    public struct limiteDireccionMovimiento {
+    public class limiteDireccionMovimiento {
         public Direccion direccionUnidad;
         public int limiteMovimiento;
-   
+
+        public limiteDireccionMovimiento(Direccion direccionUnidad, int limiteMovimiento)
+        {
+            this.direccionUnidad = direccionUnidad;
+            this.limiteMovimiento = limiteMovimiento;
+        }
+
+
     }
     public List<limiteDireccionMovimiento> limiteDirMov;
 

@@ -62,6 +62,9 @@ public class UnidadMovimiento : MonoBehaviour
                     cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                     cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
                     movimientos.Add(new Movimiento(cinicio,cobjetivo));
+
+                    //Primer movimiento realizado, se pasa el movimento en la direccion Norte de 2 a 1
+                    NuevoMovimiento(unidad,Direccion.Norte,1);
                 }
                 else
                 {
@@ -332,6 +335,34 @@ public class UnidadMovimiento : MonoBehaviour
 
         }
 
+
+    }
+
+    public void NuevoMovimiento(Unidad unidad,Direccion direccion,int nuevoMovimiento)
+    {
+
+        List<Unidad.limiteDireccionMovimiento> limDirMov = unidad.limiteDirMov;
+
+        for (int i = 0; i < limDirMov.Count; i++)
+        {
+           
+            switch(direccion)
+            {
+
+                case Direccion.Norte:
+                {
+                    if(limDirMov[i].direccionUnidad == Direccion.Norte)
+                    {
+                        
+                        limDirMov[i].limiteMovimiento = nuevoMovimiento;
+
+                    }
+                    
+                    break;
+                }
+
+            }
+        }
 
     }
 
