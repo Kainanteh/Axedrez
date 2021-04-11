@@ -16,7 +16,7 @@ public class Unidad : MonoBehaviour
     
     [SerializeField] TipoUnidad tipoUnidad; 
 
-    
+    public bool MovimientoConAtaque = true;
 
     [System.Serializable] 
     public class limiteDireccionMovimiento {
@@ -31,7 +31,21 @@ public class Unidad : MonoBehaviour
 
 
     }
+    [System.Serializable] 
+    public class limiteDireccionAtaque {
+        public Direccion direccionUnidad;
+        public int limiteAtaque;
+
+        public limiteDireccionAtaque(Direccion direccionUnidad, int limiteAtaque)
+        {
+            this.direccionUnidad = direccionUnidad;
+            this.limiteAtaque = limiteAtaque;
+        }
+
+
+    }
     public List<limiteDireccionMovimiento> limiteDirMov;
+    public List<limiteDireccionAtaque> limiteDirAtaq;
 
 
     private void Start()

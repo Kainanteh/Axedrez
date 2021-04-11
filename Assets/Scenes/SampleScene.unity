@@ -1402,6 +1402,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirAtaq.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
       propertyPath: tipoUnidad
       value: 0
       objectReference: {fileID: 0}
@@ -1480,6 +1484,42 @@ PrefabInstance:
     - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
       propertyPath: celdaIniciost
       value: Celda 1 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirAtaq.Array.data[1].direccionUnidad
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirAtaq.Array.data[2].direccionUnidad
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirAtaq.Array.data[3].direccionUnidad
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirAtaq.Array.data[4].direccionUnidad
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirAtaq.Array.data[5].direccionUnidad
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirAtaq.Array.data[6].direccionUnidad
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirAtaq.Array.data[7].direccionUnidad
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirAtaq.Array.data[1].limiteAtaque
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239742799752173463, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
+      propertyPath: limiteDirAtaq.Array.data[7].limiteAtaque
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2441506605888127508, guid: bf9a630224512274e9e3a0c615b1d12c, type: 3}
       propertyPath: m_Name
