@@ -17,6 +17,7 @@ public class Unidad : MonoBehaviour
     [SerializeField] TipoUnidad tipoUnidad; 
 
     public bool MovimientoConAtaque = true;
+    public bool MovimientoDirecto = false;
 
     [System.Serializable] 
     public class limiteDireccionMovimiento {
@@ -31,6 +32,7 @@ public class Unidad : MonoBehaviour
 
 
     }
+
     [System.Serializable] 
     public class limiteDireccionAtaque {
         public Direccion direccionUnidad;
@@ -44,8 +46,20 @@ public class Unidad : MonoBehaviour
 
 
     }
+
+    [System.Serializable] 
+    public class limiteDireccionDirecta {
+        public Direccion direccionUnidadFila;
+        public int limiteAtaqueFila;
+        public Direccion direccionUnidadColumna;
+        public int limiteAtaqueColumna;
+
+    }
+
     public List<limiteDireccionMovimiento> limiteDirMov;
     public List<limiteDireccionAtaque> limiteDirAtaq;
+    public List<limiteDireccionDirecta> limiteDirDirec;
+
 
 
     private void Start()

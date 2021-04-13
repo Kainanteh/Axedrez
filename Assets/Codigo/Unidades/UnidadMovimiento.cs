@@ -54,47 +54,75 @@ public class UnidadMovimiento : MonoBehaviour
             case TipoUnidad.Peon:
             {
 
-                // if(ataque == true){NuevoMovimiento(unidad,Direccion.Norte,0);NuevoMovimiento(unidad,Direccion.NorEste,1);NuevoMovimiento(unidad,Direccion.NorOeste,1);}
-                
-                    
-
-                if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == true)
+                if(unidad.MovimientoDirecto == true)
                 {
 
-                    
-                  
-                    cobjetivo.GetUnidadEnCelda().gameObject.SetActive(false);cobjetivo.SetUnidadEnCelda(null);  // La unidad objetiva se esconde 
-                                                                                                                // y se quita la ref en la celda objetivo
+                    if(DireccionDirectaUnidad(cobjetivo,cinicio,unidad,false ))
+                    {
 
-                                                                                                                // Peon tiene movimiento 2:1-N pero no puedo atacar
-                                                                                                                // si hay objetivo tiene movmiento de ataque 1-NO-NE
                         
-                    cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
-                    cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
-                    movimientos.Add(new Movimiento(cinicio,cobjetivo));
-                    NuevoMovimiento(unidad,Direccion.Norte,1);
-                
+                        if(ataque == true)
+                        {
+                        cobjetivo.GetUnidadEnCelda().gameObject.SetActive(false);cobjetivo.SetUnidadEnCelda(null);  // La unidad objetiva se esconde 
+                        }                                                                                           // y se quita la ref en la celda objetivo
+
+                                                                                                               
+                            
+                        cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
+                        cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
+                        movimientos.Add(new Movimiento(cinicio,cobjetivo));
+                       
                     
-                }
-                if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == false)
-                {
+                        
+                    }
+                    else 
+                    {
 
+                        cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); 
 
-                    cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
-                    cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
-                    movimientos.Add(new Movimiento(cinicio,cobjetivo));
-                    //Primer movimiento realizado, se pasa el movimento en la direccion Norte de 2 a 1
-                    NuevoMovimiento(unidad,Direccion.Norte,1);
-                
+                    }
 
                 }
                 else
-                {
+                {   
 
-                    cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); 
+                    if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == true)
+                    {
 
+                        
+                    
+                        cobjetivo.GetUnidadEnCelda().gameObject.SetActive(false);cobjetivo.SetUnidadEnCelda(null);  // La unidad objetiva se esconde 
+                                                                                                                    // y se quita la ref en la celda objetivo
+
+                                                                                                                    // Peon tiene movimiento 2:1-N pero no puedo atacar
+                                                                                                                    // si hay objetivo tiene movmiento de ataque 1-NO-NE
+                            
+                        cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
+                        cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
+                        movimientos.Add(new Movimiento(cinicio,cobjetivo));
+                        NuevoMovimiento(unidad,Direccion.Norte,1);
+                    
+                        
+                    }
+                    if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == false)
+                    {
+
+
+                        cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
+                        cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
+                        movimientos.Add(new Movimiento(cinicio,cobjetivo));
+                        //Primer movimiento realizado, se pasa el movimento en la direccion Norte de 2 a 1
+                        NuevoMovimiento(unidad,Direccion.Norte,1);
+                    
+
+                    }
+                    else
+                    {
+
+                        cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); 
+
+                    }
                 }
-                // if(ataque == true){NuevoMovimiento(unidad,Direccion.Norte,1);NuevoMovimiento(unidad,Direccion.NorEste,0);NuevoMovimiento(unidad,Direccion.NorOeste,0);}
                 break;
             }
             case TipoUnidad.Reina:
@@ -150,6 +178,12 @@ public class UnidadMovimiento : MonoBehaviour
         Celda celdabloqOeste = null;
         Celda celdabloqNorOeste = null;
 
+
+            if(unidad.MovimientoDirecto == false)
+            {
+
+
+
                 for (int z = 0; z < (cuadricula.filas*cuadricula.columnas); z++) // Bloquear movimiento por otra unidad en la direccion
                 {
                    
@@ -203,25 +237,109 @@ public class UnidadMovimiento : MonoBehaviour
                    
                             
                 }
+
+            }
+
                 for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
 		        {
 
-                    if(celdabloqNorte!=null && celdabloqNorte.fila<celdas[i].fila && celdabloqNorte.columna==celdas[i].columna)         {continue;}
-                    if(celdabloqNorEste!=null && celdabloqNorEste.fila<celdas[i].fila && celdabloqNorEste.columna<celdas[i].columna)    {continue;}
-                    if(celdabloqEste!=null  && celdabloqEste.fila==celdas[i].fila && celdabloqEste.columna<celdas[i].columna)           {continue;} 
-                    if(celdabloqSurEste!=null && celdabloqSurEste.fila>celdas[i].fila && celdabloqSurEste.columna<celdas[i].columna)    {continue;}
-                    if(celdabloqSur!=null && celdabloqSur.fila>celdas[i].fila && celdabloqSur.columna==celdas[i].columna)               {continue;}
-                    if(celdabloqSurOeste!=null && celdabloqSurOeste.fila>celdas[i].fila && celdabloqSurOeste.columna>celdas[i].columna) {continue;}
-                    if(celdabloqOeste!=null && celdabloqOeste.fila==celdas[i].fila && celdabloqOeste.columna>celdas[i].columna)         {continue;}
-                    if(celdabloqNorOeste!=null && celdabloqNorOeste.fila<celdas[i].fila && celdabloqNorOeste.columna>celdas[i].columna) {continue;}
+                    if(unidad.MovimientoDirecto == false)
+                    {
+
+                        if(celdabloqNorte!=null && celdabloqNorte.fila<celdas[i].fila && celdabloqNorte.columna==celdas[i].columna)         {continue;}
+                        if(celdabloqNorEste!=null && celdabloqNorEste.fila<celdas[i].fila && celdabloqNorEste.columna<celdas[i].columna)    {continue;}
+                        if(celdabloqEste!=null  && celdabloqEste.fila==celdas[i].fila && celdabloqEste.columna<celdas[i].columna)           {continue;} 
+                        if(celdabloqSurEste!=null && celdabloqSurEste.fila>celdas[i].fila && celdabloqSurEste.columna<celdas[i].columna)    {continue;}
+                        if(celdabloqSur!=null && celdabloqSur.fila>celdas[i].fila && celdabloqSur.columna==celdas[i].columna)               {continue;}
+                        if(celdabloqSurOeste!=null && celdabloqSurOeste.fila>celdas[i].fila && celdabloqSurOeste.columna>celdas[i].columna) {continue;}
+                        if(celdabloqOeste!=null && celdabloqOeste.fila==celdas[i].fila && celdabloqOeste.columna>celdas[i].columna)         {continue;}
+                        if(celdabloqNorOeste!=null && celdabloqNorOeste.fila<celdas[i].fila && celdabloqNorOeste.columna>celdas[i].columna) {continue;}
+                        
+                        DireccionUnidad(celdas[i],cinicio,unidad ,true);
                     
-                    DireccionUnidad(celdas[i],cinicio,unidad ,true);
+                    }
+                    else
+                    {
+
+                        DireccionDirectaUnidad(celdas[i],cinicio,unidad ,true);
+
+                    }
 
                 }
 
     }
 
-    //bool DireccionUnidad(Celda celda, Celda celdainicio, List<Direccion> direcciones, int movfila, int movcolum)
+
+    bool DireccionDirectaUnidad(Celda celda, Celda celdainicio, Unidad unidad, bool calculo)
+    {
+
+        if(calculo==false)
+        {
+
+            
+        }
+
+        Celda[] celdas = cuadricula.GetCeldas();
+
+
+        for (int i = 0; i < unidad.limiteDirDirec.Count; i++)
+        {
+
+            //N +
+            //S -
+            //E +
+            //O -
+            
+            int tFila   = -1;
+            int tColum  = -1;
+
+            switch(unidad.limiteDirDirec[i].direccionUnidadFila)
+            {
+
+                case Direccion.Norte:   {tFila = celdainicio.fila + unidad.limiteDirDirec[i].limiteAtaqueFila;break;}
+                case Direccion.Sur:     {tFila = celdainicio.fila - unidad.limiteDirDirec[i].limiteAtaqueFila;break;}
+                case Direccion.Este:    {tFila = celdainicio.fila + unidad.limiteDirDirec[i].limiteAtaqueFila;break;}
+                case Direccion.Oeste:   {tFila = celdainicio.fila - unidad.limiteDirDirec[i].limiteAtaqueFila;break;}
+              
+            }
+            switch(unidad.limiteDirDirec[i].direccionUnidadColumna)
+            {
+
+                case Direccion.Norte:   {tColum = celdainicio.columna + unidad.limiteDirDirec[i].limiteAtaqueColumna;break;}
+                case Direccion.Sur:     {tColum = celdainicio.columna - unidad.limiteDirDirec[i].limiteAtaqueColumna;break;}
+                case Direccion.Este:    {tColum = celdainicio.columna + unidad.limiteDirDirec[i].limiteAtaqueColumna;break;}
+                case Direccion.Oeste:   {tColum = celdainicio.columna - unidad.limiteDirDirec[i].limiteAtaqueColumna;break;}
+              
+            }
+
+            if(tFila == celda.fila && tColum == celda.columna)                
+            {if(calculo == true){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}return true;}
+
+        }
+
+
+            // if(celda.fila - celdainicio.fila < 0  && (celda.columna - celdainicio.columna) == 0  
+            //     && unidad.limiteDirMov[i].direccionUnidad == Direccion.Sur                                  // Sur
+            //     && (celdainicio.fila-celda.fila)<=unidad.limiteDirMov[i].limiteMovimiento )        
+            //         {if(calculo == true){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}return true;}
+            // if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) > 0 
+            //     && unidad.limiteDirMov[i].direccionUnidad == Direccion.Este                                 // Este
+            //     && (celda.columna-celdainicio.columna)<=unidad.limiteDirMov[i].limiteMovimiento)       
+            //         {if(calculo == true){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}return true;}
+            // if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) < 0 
+            //     && unidad.limiteDirMov[i].direccionUnidad == Direccion.Oeste                                // Oeste
+            //     && (celdainicio.columna-celda.columna)<=unidad.limiteDirMov[i].limiteMovimiento)       
+            //         {if(calculo == true){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}return true;}
+         
+            
+    
+
+        return false;
+
+    }
+
+
+    
     bool DireccionUnidad(Celda celda, Celda celdainicio, Unidad unidad, bool calculo)
     {
 
@@ -388,7 +506,7 @@ public class UnidadMovimiento : MonoBehaviour
                 
             */
 
-            if(unidad.MovimientoConAtaque==false && celda.GetUnidadEnCelda()!=null){continue;} // HAY QUE IMPEDIR EL MOVIMENTO ATAQUE CUANDO TOQUE
+            if(unidad.MovimientoConAtaque==false && celda.GetUnidadEnCelda()!=null){continue;} // Las unidades pueden no tener ataque con movimiento
 
             if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) == 0             // La celda objetivo es Norte respecto a la celda inicial
                 && unidad.limiteDirMov[i].direccionUnidad == Direccion.Norte                                // Norte

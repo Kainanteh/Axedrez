@@ -123,13 +123,13 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
             
       
-            if(unidadselecsoltar != null)
+            if(unidadselecsoltar != null) // Si la celda donde sueltas ya tiene unidad POSIBLE ATAQUE
             {
 
                 unidadMovimiento.GenerarMovimiento(unidadEnCelda,this,unidadceldasoltar,true);
 
             }   
-            else     // Si la celda donde sueltas ya tiene unidad POSIBLE ATAQUE
+            else     
             {
 
                 unidadMovimiento.GenerarMovimiento(unidadEnCelda,this,unidadceldasoltar,false);
