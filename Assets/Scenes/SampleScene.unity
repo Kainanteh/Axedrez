@@ -538,7 +538,7 @@ MonoBehaviour:
   - {fileID: 6122812065284293074, guid: ea31dcc7bcf531448832d0a251ccc444, type: 3}
   UnidadesSprite:
   - {fileID: 21300000, guid: d6899a1143540e240bd0c826400f74ee, type: 3}
-  - {fileID: 21300000, guid: 1ac1c5ad407acb74c82ab569936cd904, type: 3}
+  - {fileID: 21300000, guid: 9d2f09e7aa638174aa40f86db3f61c15, type: 3}
   - {fileID: 21300000, guid: 5e3af032d1c02dd4ab8ca806be614719, type: 3}
   - {fileID: 21300000, guid: abea565a12c3f3242b1a4a87ae07119b, type: 3}
   - {fileID: 21300000, guid: d0678ff865e00224da9252710126ada8, type: 3}
