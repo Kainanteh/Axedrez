@@ -16,8 +16,6 @@ public class Cuadricula : MonoBehaviour
 	public Celda celdaPrefab;
     public Celda[] celdas;
 
-	
-
 	public TextMeshProUGUI celdaEtiquetaPrefab;
 
 	[SerializeField] private Canvas cuadriculaCanvas;
@@ -26,6 +24,16 @@ public class Cuadricula : MonoBehaviour
 
 	public Color32 ColorNegras;
 	public Color32 ColorBlancas;
+
+
+	public GameObject[] UnidadesPrefabs;
+	public Sprite[] UnidadesSprite;
+
+	//	| 0 (fila) * 0 (columna) * 0 (id unidad) * 0 (jugador blanco o negro) |
+	private string semilla = 
+	"/0*0*2*0/0*1*1*0/0*2*3*0/0*3*5*0/0*4*4*0/0*5*3*0/0*6*1*0/0*7*2*0/1*0*0*0/1*1*0*0/1*2*0*0/1*3*0*0/1*4*0*0/1*5*0*0/1*6*0*0/1*7*0*0/7*0*2*1/7*1*1*1/7*2*3*1/7*3*5*1/7*4*4*1/7*5*3*1/7*6*1*1/7*7*2*1/6*0*0*1/6*1*0*1/6*2*0*1/6*3*0*1/6*4*0*1/6*5*0*1/6*6*0*1/6*7*0*1";
+
+	
 
 	public Celda[] GetCeldas()
 	{
@@ -52,7 +60,15 @@ public class Cuadricula : MonoBehaviour
 				CrearCelda(x, y, i++);
 			}
 		}
-		//cuadriculaCanvas = GetComponentInChildren<Canvas>();
+		
+		
+
+	}
+	void Start () 
+	{
+
+		Semillero();
+
 	}
 	
 	void CrearCelda (int x, int y, int i) 
@@ -92,6 +108,51 @@ public class Cuadricula : MonoBehaviour
 		//etiqueta.rectTransform.anchoredPosition =
 		//	new Vector2(cuadriculaCanvas.transform.position.x, cuadriculaCanvas.transform.position.y);
 		etiqueta.text = y.ToString() + " " + x.ToString();
+
+	}
+
+	/*
+
+	███████╗███████╗███╗   ███╗██╗██╗     ██╗     ███████╗██████╗  ██████╗ 
+	██╔════╝██╔════╝████╗ ████║██║██║     ██║     ██╔════╝██╔══██╗██╔═══██╗
+	███████╗█████╗  ██╔████╔██║██║██║     ██║     █████╗  ██████╔╝██║   ██║
+	╚════██║██╔══╝  ██║╚██╔╝██║██║██║     ██║     ██╔══╝  ██╔══██╗██║   ██║
+	███████║███████╗██║ ╚═╝ ██║██║███████╗███████╗███████╗██║  ██║╚██████╔╝
+	╚══════╝╚══════╝╚═╝     ╚═╝╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ 
+																		
+
+	*/
+
+	void Semillero()
+	{
+
+		string[] unidadsemilla = semilla.Split('/');
+		
+
+		 foreach (string unidad in unidadsemilla)
+		 {
+			if(unidad==""){continue;}
+
+			// Debug.Log("Fila: " +unidad.Split('*')[0] + " Columna: " + unidad.Split('*')[1] + " Id unidad " 
+			// + UnidadesPrefabs[int.Parse(unidad.Split('*')[2])].name + " Jugador " + unidad.Split('*')[3] );
+
+			GameObject UnidadObject = Instantiate(UnidadesPrefabs[int.Parse(unidad.Split('*')[2])],Vector3.zero,Quaternion.identity);
+
+			Unidad UnidadScript = UnidadObject.GetComponent<Unidad>();
+
+			UnidadScript.SetCelda("Celda " + unidad.Split('*')[0] + " " + unidad.Split('*')[1]);
+
+			if(unidad.Split('*')[3]=="1")
+			{
+
+				SpriteRenderer UnidadSpriteRend = UnidadObject.GetComponentsInChildren<SpriteRenderer>()[0];
+				UnidadSpriteRend.sprite = UnidadesSprite[int.Parse(unidad.Split('*')[2])]; // Cambio de negro a blanco
+
+			}
+
+		 }
+
+		
 
 	}
 
