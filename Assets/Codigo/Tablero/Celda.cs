@@ -96,22 +96,25 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
         unidadEnCelda.gameObject.transform.position = new Vector3(hitInfo.point.x,hitInfo.point.y,0f);
        
-        
+        unidadEnCelda.GetComponentsInChildren<SpriteRenderer>()[0].sortingOrder = 25; // El sprite seleccionado tiene que estar por encima de todo lo demas
         
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
 
-            unidadMovimiento.ReiniciarCalculo();
+            unidadMovimiento.ReiniciarCalculo(); // Se reinicia en todas las celdas los sprite de movimiento y ataque
+
+            unidadEnCelda.GetComponentsInChildren<SpriteRenderer>()[0].sortingOrder = 5; 
 
             RaycastHit2D hitInfo = OnControlRay();
 
             if (!hitInfo)
             {
-              
+                this.SetUnidadEnCelda(this.GetUnidadEnCelda()); // Si sueltas la unidad y no es una celda
                 return;
             }
+            else if(hitInfo.transform.gameObject.name=="Pantalla"){this.SetUnidadEnCelda(this.GetUnidadEnCelda());return;}
 
             Celda unidadceldasoltar = hitInfo.transform.gameObject.GetComponent<Celda>();
             Unidad unidadselecsoltar = unidadceldasoltar.GetUnidadEnCelda();

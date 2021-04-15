@@ -31,7 +31,7 @@ public class Cuadricula : MonoBehaviour
 
 	//	| 0 (fila) * 0 (columna) * 0 (id unidad) * 0 (jugador blanco o negro) |
 	private string semilla = 
-	"/0*0*2*0/0*1*1*0/0*2*3*0/0*3*5*0/0*4*4*0/0*5*3*0/0*6*1*0/0*7*2*0/1*0*0*0/1*1*0*0/1*2*0*0/1*3*0*0/1*4*0*0/1*5*0*0/1*6*0*0/1*7*0*0/7*0*2*1/7*1*1*1/7*2*3*1/7*3*5*1/7*4*4*1/7*5*3*1/7*6*1*1/7*7*2*1/6*0*0*1/6*1*0*1/6*2*0*1/6*3*0*1/6*4*0*1/6*5*0*1/6*6*0*1/6*7*0*1";
+	"/0*0*2*1/0*1*1*1/0*2*3*1/0*3*5*1/0*4*4*1/0*5*3*1/0*6*1*1/0*7*2*1/1*0*0*1/1*1*0*1/1*2*0*1/1*3*0*1/1*4*0*1/1*5*0*1/1*6*0*1/1*7*0*1/7*0*2*2/7*1*1*2/7*2*3*2/7*3*5*2/7*4*4*2/7*5*3*2/7*6*1*2/7*7*2*2/6*0*0*2/6*1*0*2/6*2*0*2/6*3*0*2/6*4*0*2/6*5*0*2/6*6*0*2/6*7*0*2";
 
 	
 
@@ -142,7 +142,10 @@ public class Cuadricula : MonoBehaviour
 
 			UnidadScript.SetCelda("Celda " + unidad.Split('*')[0] + " " + unidad.Split('*')[1]);
 
-			if(unidad.Split('*')[3]=="1")
+			UnidadScript.UnidadJugador = GameObject.Find("Jugador "+int.Parse(unidad.Split('*')[3])).GetComponent<Jugador>();
+			//UnidadScript.UnidadJugador.idJugador = int.Parse(unidad.Split('*')[3]);
+
+			if(unidad.Split('*')[3]=="2")
 			{
 
 				SpriteRenderer UnidadSpriteRend = UnidadObject.GetComponentsInChildren<SpriteRenderer>()[0];

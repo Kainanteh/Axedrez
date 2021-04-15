@@ -12,7 +12,7 @@ public class Unidad : MonoBehaviour
 
     //public string celdaIniciost;
 
-
+    public Jugador UnidadJugador;
     
     [SerializeField] TipoUnidad tipoUnidad; 
 

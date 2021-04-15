@@ -5,6 +5,8 @@ using UnityEngine;
 public class ManagerJugadores : MonoBehaviour
 {
 
+   
+
 
 
 

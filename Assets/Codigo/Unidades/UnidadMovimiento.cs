@@ -35,19 +35,9 @@ public class UnidadMovimiento : MonoBehaviour
 
     public bool GenerarMovimiento(Unidad unidad, Celda cinicio, Celda cobjetivo, bool ataque)
     {
-        
-        
 
 
-        // int movcolum = 999;
-        // int movfila = 999;
-
-        // movcolum = cobjetivo.columna - cinicio.columna;
-        // movfila = cobjetivo.fila - cinicio.fila;
-
-        // if(movcolum == 999 || movfila == 999){return false;}
-
-        //Debug.Log("movimiento COLUMNA " + movcolum + " movimiento FILA " + movfila + " ");
+        if(ataque == true && cobjetivo.GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){return false;} //Si la unidad es del mismo jugador
 
         switch(unidad.GetTipoUnidad())
         {
@@ -174,12 +164,21 @@ public class UnidadMovimiento : MonoBehaviour
         }
 
 
-
+    
         return true;
 
     }
 
+    /*
 
+     ██████╗ █████╗ ██╗      ██████╗██╗   ██╗██╗      ██████╗ 
+    ██╔════╝██╔══██╗██║     ██╔════╝██║   ██║██║     ██╔═══██╗
+    ██║     ███████║██║     ██║     ██║   ██║██║     ██║   ██║
+    ██║     ██╔══██║██║     ██║     ██║   ██║██║     ██║   ██║
+    ╚██████╗██║  ██║███████╗╚██████╗╚██████╔╝███████╗╚██████╔╝
+     ╚═════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝ ╚═════╝ 
+
+    */
 
     public void CalculoMovimiento(Unidad unidad, Celda cinicio)
     {
@@ -203,11 +202,11 @@ public class UnidadMovimiento : MonoBehaviour
 
                 for (int z = 0; z < (cuadricula.filas*cuadricula.columnas); z++) // Bloquear movimiento por otra unidad en la direccion
                 {
-                   
+                     
                     if(celdas[z].GetUnidadEnCelda()==cinicio.GetUnidadEnCelda()){continue; } // Si es la misma unidad no cuenta para el calculo de bloquear
                     else if(celdas[z].GetUnidadEnCelda()!=null)
                     {
-
+                        
                         // Al mirar la cuadricula de forma ascendente hay que asegurarse de que las direccion Sur,SurEste,SurOeste y Oeste recojan la celda
                         // mas cercano a la celda de la unidad con la que se hace el calculo
 
@@ -271,7 +270,8 @@ public class UnidadMovimiento : MonoBehaviour
                         if(celdabloqSurOeste!=null && celdabloqSurOeste.fila>celdas[i].fila && celdabloqSurOeste.columna>celdas[i].columna) {continue;}
                         if(celdabloqOeste!=null && celdabloqOeste.fila==celdas[i].fila && celdabloqOeste.columna>celdas[i].columna)         {continue;}
                         if(celdabloqNorOeste!=null && celdabloqNorOeste.fila<celdas[i].fila && celdabloqNorOeste.columna>celdas[i].columna) {continue;}
-                        
+                        if(celdas[i].GetUnidadEnCelda()!=null 
+                        && celdas[i].GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){continue;} // Si la unidad es del mismo jugador
                         DireccionUnidad(celdas[i],cinicio,unidad ,true);
                     
                     }
@@ -286,15 +286,19 @@ public class UnidadMovimiento : MonoBehaviour
 
     }
 
+    /*
+
+        ██████╗ ██╗██████╗ ███████╗ ██████╗████████╗ ██████╗ 
+        ██╔══██╗██║██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔═══██╗
+        ██║  ██║██║██████╔╝█████╗  ██║        ██║   ██║   ██║
+        ██║  ██║██║██╔══██╗██╔══╝  ██║        ██║   ██║   ██║
+        ██████╔╝██║██║  ██║███████╗╚██████╗   ██║   ╚██████╔╝
+        ╚═════╝ ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝   ╚═╝    ╚═════╝ 
+
+    */
 
     bool DireccionDirectaUnidad(Celda celda, Celda celdainicio, Unidad unidad, bool calculo)
     {
-
-        if(calculo==false)
-        {
-
-            
-        }
 
         Celda[] celdas = cuadricula.GetCeldas();
 
@@ -336,23 +340,6 @@ public class UnidadMovimiento : MonoBehaviour
 
         }
 
-
-            // if(celda.fila - celdainicio.fila < 0  && (celda.columna - celdainicio.columna) == 0  
-            //     && unidad.limiteDirMov[i].direccionUnidad == Direccion.Sur                                  // Sur
-            //     && (celdainicio.fila-celda.fila)<=unidad.limiteDirMov[i].limiteMovimiento )        
-            //         {if(calculo == true){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}return true;}
-            // if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) > 0 
-            //     && unidad.limiteDirMov[i].direccionUnidad == Direccion.Este                                 // Este
-            //     && (celda.columna-celdainicio.columna)<=unidad.limiteDirMov[i].limiteMovimiento)       
-            //         {if(calculo == true){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}return true;}
-            // if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) < 0 
-            //     && unidad.limiteDirMov[i].direccionUnidad == Direccion.Oeste                                // Oeste
-            //     && (celdainicio.columna-celda.columna)<=unidad.limiteDirMov[i].limiteMovimiento)       
-            //         {if(calculo == true){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}return true;}
-         
-            
-    
-
         return false;
 
     }
@@ -368,13 +355,14 @@ public class UnidadMovimiento : MonoBehaviour
 
             /*
 
-            ██╗     ██╗███╗   ███╗██╗████████╗███████╗    ██████╗ ███████╗    ██████╗ ██╗      ██████╗  ██████╗ ██╗   ██╗███████╗ ██████╗ 
-            ██║     ██║████╗ ████║██║╚══██╔══╝██╔════╝    ██╔══██╗██╔════╝    ██╔══██╗██║     ██╔═══██╗██╔═══██╗██║   ██║██╔════╝██╔═══██╗
-            ██║     ██║██╔████╔██║██║   ██║   █████╗      ██║  ██║█████╗      ██████╔╝██║     ██║   ██║██║   ██║██║   ██║█████╗  ██║   ██║
-            ██║     ██║██║╚██╔╝██║██║   ██║   ██╔══╝      ██║  ██║██╔══╝      ██╔══██╗██║     ██║   ██║██║▄▄ ██║██║   ██║██╔══╝  ██║   ██║
-            ███████╗██║██║ ╚═╝ ██║██║   ██║   ███████╗    ██████╔╝███████╗    ██████╔╝███████╗╚██████╔╝╚██████╔╝╚██████╔╝███████╗╚██████╔╝
-            ╚══════╝╚═╝╚═╝     ╚═╝╚═╝   ╚═╝   ╚══════╝    ╚═════╝ ╚══════╝    ╚═════╝ ╚══════╝ ╚═════╝  ╚══▀▀═╝  ╚═════╝ ╚══════╝ ╚═════╝ 
-                  
+            ██████╗ ██╗      ██████╗  ██████╗ ██╗   ██╗███████╗ ██████╗ 
+            ██╔══██╗██║     ██╔═══██╗██╔═══██╗██║   ██║██╔════╝██╔═══██╗
+            ██████╔╝██║     ██║   ██║██║   ██║██║   ██║█████╗  ██║   ██║
+            ██╔══██╗██║     ██║   ██║██║▄▄ ██║██║   ██║██╔══╝  ██║   ██║
+            ██████╔╝███████╗╚██████╔╝╚██████╔╝╚██████╔╝███████╗╚██████╔╝
+            ╚═════╝ ╚══════╝ ╚═════╝  ╚══▀▀═╝  ╚═════╝ ╚══════╝ ╚═════╝ 
+                                                                        
+   
             */
 
             if(calculo==false)
@@ -440,23 +428,18 @@ public class UnidadMovimiento : MonoBehaviour
 
             }
 
-            // if(celda.fila == 2 && celda.columna==4)
-            // {
-            //      Debug.Log("-------------------------");
-            //     Debug.Log("Celda inic : " + celdainicio.fila + " " + celdainicio.columna);Debug.Log("Celda obj : " + celda.fila + " " + celda.columna);
-            //     Debug.Log( unidad.limiteDirAtaq[i].direccionUnidad );
-            //     Debug.Log("-------------------------");
-            // }
+
 
             /*
                         
-            ██╗     ██╗███╗   ███╗██╗████████╗███████╗    ██████╗ ███████╗     █████╗ ████████╗ █████╗  ██████╗ ██╗   ██╗███████╗
-            ██║     ██║████╗ ████║██║╚══██╔══╝██╔════╝    ██╔══██╗██╔════╝    ██╔══██╗╚══██╔══╝██╔══██╗██╔═══██╗██║   ██║██╔════╝
-            ██║     ██║██╔████╔██║██║   ██║   █████╗      ██║  ██║█████╗      ███████║   ██║   ███████║██║   ██║██║   ██║█████╗  
-            ██║     ██║██║╚██╔╝██║██║   ██║   ██╔══╝      ██║  ██║██╔══╝      ██╔══██║   ██║   ██╔══██║██║▄▄ ██║██║   ██║██╔══╝  
-            ███████╗██║██║ ╚═╝ ██║██║   ██║   ███████╗    ██████╔╝███████╗    ██║  ██║   ██║   ██║  ██║╚██████╔╝╚██████╔╝███████╗
-            ╚══════╝╚═╝╚═╝     ╚═╝╚═╝   ╚═╝   ╚══════╝    ╚═════╝ ╚══════╝    ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚══▀▀═╝  ╚═════╝ ╚══════╝
-                                                                                                                                
+
+             █████╗ ████████╗ █████╗  ██████╗ ██╗   ██╗███████╗
+            ██╔══██╗╚══██╔══╝██╔══██╗██╔═══██╗██║   ██║██╔════╝
+            ███████║   ██║   ███████║██║   ██║██║   ██║█████╗  
+            ██╔══██║   ██║   ██╔══██║██║▄▄ ██║██║   ██║██╔══╝  
+            ██║  ██║   ██║   ██║  ██║╚██████╔╝╚██████╔╝███████╗
+            ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚══▀▀═╝  ╚═════╝ ╚══════╝
+                                                                                                                       
             */
 
             if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) == 0             // La celda objetivo es Norte respecto a la celda inicial
@@ -524,13 +507,13 @@ public class UnidadMovimiento : MonoBehaviour
 
             /*
 
-            ██╗     ██╗███╗   ███╗██╗████████╗███████╗    ██████╗ ███████╗    ███╗   ███╗ ██████╗ ██╗   ██╗██╗███╗   ███╗██╗███████╗███╗   ██╗████████╗ ██████╗ 
-            ██║     ██║████╗ ████║██║╚══██╔══╝██╔════╝    ██╔══██╗██╔════╝    ████╗ ████║██╔═══██╗██║   ██║██║████╗ ████║██║██╔════╝████╗  ██║╚══██╔══╝██╔═══██╗
-            ██║     ██║██╔████╔██║██║   ██║   █████╗      ██║  ██║█████╗      ██╔████╔██║██║   ██║██║   ██║██║██╔████╔██║██║█████╗  ██╔██╗ ██║   ██║   ██║   ██║
-            ██║     ██║██║╚██╔╝██║██║   ██║   ██╔══╝      ██║  ██║██╔══╝      ██║╚██╔╝██║██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║██║██╔══╝  ██║╚██╗██║   ██║   ██║   ██║
-            ███████╗██║██║ ╚═╝ ██║██║   ██║   ███████╗    ██████╔╝███████╗    ██║ ╚═╝ ██║╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║██║███████╗██║ ╚████║   ██║   ╚██████╔╝
-            ╚══════╝╚═╝╚═╝     ╚═╝╚═╝   ╚═╝   ╚══════╝    ╚═════╝ ╚══════╝    ╚═╝     ╚═╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ 
-                
+            ███╗   ███╗ ██████╗ ██╗   ██╗██╗███╗   ███╗██╗███████╗███╗   ██╗████████╗ ██████╗ 
+            ████╗ ████║██╔═══██╗██║   ██║██║████╗ ████║██║██╔════╝████╗  ██║╚══██╔══╝██╔═══██╗
+            ██╔████╔██║██║   ██║██║   ██║██║██╔████╔██║██║█████╗  ██╔██╗ ██║   ██║   ██║   ██║
+            ██║╚██╔╝██║██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║██║██╔══╝  ██║╚██╗██║   ██║   ██║   ██║
+            ██║ ╚═╝ ██║╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║██║███████╗██║ ╚████║   ██║   ╚██████╔╝
+            ╚═╝     ╚═╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ 
+
             */
 
             if(unidad.MovimientoConAtaque==false && celda.GetUnidadEnCelda()!=null){continue;} // Las unidades pueden no tener ataque con movimiento
