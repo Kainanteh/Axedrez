@@ -7,7 +7,7 @@ public class UnidadMovimiento : MonoBehaviour
     
     Cuadricula cuadricula;
 
-    
+    Turno Turnos;
 
     [System.Serializable]public struct Movimiento
     {
@@ -29,16 +29,16 @@ public class UnidadMovimiento : MonoBehaviour
         movimientos = new List<Movimiento>();
         cuadricula = GameObject.Find("Cuadricula").GetComponent<Cuadricula>();
 
-        
+        Turnos = cuadricula.GetComponent<Turno>();
 
     }
 
     public bool GenerarMovimiento(Unidad unidad, Celda cinicio, Celda cobjetivo, bool ataque)
     {
 
-
-        if(ataque == true && cobjetivo.GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){return false;} //Si la unidad es del mismo jugador
-
+        
+        if(ataque == true && cobjetivo.GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); return false;} //Si la unidad es del mismo jugador
+        
         switch(unidad.GetTipoUnidad())
         {
             case TipoUnidad.Peon:
@@ -60,8 +60,19 @@ public class UnidadMovimiento : MonoBehaviour
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
                         movimientos.Add(new Movimiento(cinicio,cobjetivo));
+                        Turnos.CambiarTurno();
+                        
+
+                        if(unidad.UnidadJugador.idJugador == 2)// !!! EL CAMBIO DEL MOVIMIENTO DEBERIA SER UNA VEZ
+                        {
+                        NuevoMovimiento(unidad,Direccion.Sur,1);
+                        
+                        }
+                        else
+                        {
                         NuevoMovimiento(unidad,Direccion.Norte,1);
-                    
+        
+                        }
                         
                     }
                     if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == false)
@@ -71,8 +82,16 @@ public class UnidadMovimiento : MonoBehaviour
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
                         movimientos.Add(new Movimiento(cinicio,cobjetivo));
-                        //Primer movimiento realizado, se pasa el movimento en la direccion Norte de 2 a 1
+                        Turnos.CambiarTurno();
+                        //Primer movimiento realizado, se pasa el movimento en la direccion Norte o Sur de 2 a 1
+                        if(unidad.UnidadJugador.idJugador == 2)
+                        {
+                        NuevoMovimiento(unidad,Direccion.Sur,1);    
+                        }
+                        else
+                        {
                         NuevoMovimiento(unidad,Direccion.Norte,1);
+                        }
                     
 
                     }
@@ -93,7 +112,7 @@ public class UnidadMovimiento : MonoBehaviour
                     if(DireccionDirectaUnidad(cobjetivo,cinicio,unidad,false ))
                     {
 
-                        Debug.Log(ataque);
+                        //Debug.Log(ataque);
                         if(ataque == true)
                         {
                         cobjetivo.GetUnidadEnCelda().gameObject.SetActive(false);cobjetivo.SetUnidadEnCelda(null);  // La unidad objetiva se esconde 
@@ -104,7 +123,7 @@ public class UnidadMovimiento : MonoBehaviour
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
                         movimientos.Add(new Movimiento(cinicio,cobjetivo));
-                       
+                        Turnos.CambiarTurno();
                     
                         
                     }
@@ -135,7 +154,7 @@ public class UnidadMovimiento : MonoBehaviour
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
                         movimientos.Add(new Movimiento(cinicio,cobjetivo));
-                       
+                        Turnos.CambiarTurno();
                     
                         
                     }
@@ -146,6 +165,7 @@ public class UnidadMovimiento : MonoBehaviour
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
                         movimientos.Add(new Movimiento(cinicio,cobjetivo));
+                        Turnos.CambiarTurno();
                         //Primer movimiento realizado, se pasa el movimento en la direccion Norte de 2 a 1
                                            
 
@@ -278,6 +298,8 @@ public class UnidadMovimiento : MonoBehaviour
                     else
                     {
 
+                        if(celdas[i].GetUnidadEnCelda()!=null 
+                        && celdas[i].GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){continue;} // Si la unidad es del mismo jugador
                         DireccionDirectaUnidad(celdas[i],cinicio,unidad ,true);
 
                     }
@@ -642,6 +664,64 @@ public class UnidadMovimiento : MonoBehaviour
                 {if(limDirMov[i].direccionUnidad == Direccion.NorOeste)
                 {
                     limDirMov[i].limiteMovimiento = nuevoMovimiento;}break;
+                }
+                
+
+            }
+        }
+
+    }
+
+    public void NuevoAtaque(Unidad unidad,Direccion direccion,int nuevoAtaque)
+    {
+
+        List<Unidad.limiteDireccionAtaque> limDirAtaq = unidad.limiteDirAtaq;
+
+        for (int i = 0; i < limDirAtaq.Count; i++)
+        {
+           
+            switch(direccion)
+            {
+
+                case Direccion.Norte:
+                {if(limDirAtaq[i].direccionUnidad == Direccion.Norte)
+                {
+                    limDirAtaq[i].limiteAtaque = nuevoAtaque;}break;
+                }
+                case Direccion.NorEste:
+                {if(limDirAtaq[i].direccionUnidad == Direccion.NorEste)
+                {
+                    limDirAtaq[i].limiteAtaque = nuevoAtaque;}break;
+                }
+                case Direccion.Este:
+                {if(limDirAtaq[i].direccionUnidad == Direccion.Este)
+                {
+                    limDirAtaq[i].limiteAtaque = nuevoAtaque;}break;
+                }
+                case Direccion.SurEste:
+                {if(limDirAtaq[i].direccionUnidad == Direccion.SurEste)
+                {
+                    limDirAtaq[i].limiteAtaque = nuevoAtaque;}break;
+                }
+                case Direccion.Sur:
+                {if(limDirAtaq[i].direccionUnidad == Direccion.Sur)
+                {
+                    limDirAtaq[i].limiteAtaque = nuevoAtaque;}break;
+                }
+                case Direccion.SurOeste:
+                {if(limDirAtaq[i].direccionUnidad == Direccion.SurOeste)
+                {
+                    limDirAtaq[i].limiteAtaque = nuevoAtaque;}break;
+                }
+                case Direccion.Oeste:
+                {if(limDirAtaq[i].direccionUnidad == Direccion.Oeste)
+                {
+                    limDirAtaq[i].limiteAtaque = nuevoAtaque;}break;
+                }
+                case Direccion.NorOeste:
+                {if(limDirAtaq[i].direccionUnidad == Direccion.NorOeste)
+                {
+                    limDirAtaq[i].limiteAtaque = nuevoAtaque;}break;
                 }
                 
 
