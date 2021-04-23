@@ -16,6 +16,7 @@ public class Unidad : MonoBehaviour
     
     [SerializeField] TipoUnidad tipoUnidad; 
 
+
     public bool MovimientoConAtaque = true;
     public bool MovimientoDirecto = false;
 

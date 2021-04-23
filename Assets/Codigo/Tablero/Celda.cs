@@ -15,10 +15,24 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
     [SerializeField] Unidad unidadEnCelda = null;
 
+
+    Cuadricula cuadricula;
+  
+    public bool cAmenazada = false;
+
+
     void Awake()
     {
 
         unidadMovimiento = GameObject.Find("Cuadricula").GetComponent<UnidadMovimiento>();
+
+    }
+
+    void Start()
+    {
+
+        cuadricula  = GameObject.Find("Cuadricula").GetComponent<Cuadricula>();
+      
 
     }
 
@@ -109,6 +123,8 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
     public void OnEndDrag(PointerEventData eventData)
     {
 
+            
+
             unidadMovimiento.ReiniciarCalculo(); // Se reinicia en todas las celdas los sprite de movimiento y ataque
 
            
@@ -125,30 +141,40 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
             Celda unidadceldasoltar = hitInfo.transform.gameObject.GetComponent<Celda>();
             Unidad unidadselecsoltar = unidadceldasoltar.GetUnidadEnCelda();
 
-             unidadEnCelda.GetComponentsInChildren<SpriteRenderer>()[0].sortingOrder = 5; 
-
+          
             if(GetUnidadEnCelda() == null){return;}     // Si esta celda no tiene unidad
             
-            if(unidadEnCelda.UnidadJugador != GameObject.Find("Cuadricula").GetComponent<Turno>().GetJugadorActual())
+               unidadEnCelda.GetComponentsInChildren<SpriteRenderer>()[0].sortingOrder = 5; 
+
+
+            if(unidadEnCelda.UnidadJugador != GameObject.Find("Cuadricula").GetComponent<Turno>().GetJugadorActual()) //Si no es el turno del jugador
             {return;}
             
             if(this == unidadceldasoltar){return;}      // Si sueltas en la misma celda
 
-            
+              //if(ataque == true && cobjetivo.GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); return false;} //Si la unidad es del mismo jugador
+        
       
             if(unidadselecsoltar != null) // Si la celda donde sueltas ya tiene unidad POSIBLE ATAQUE
             {
 
-                unidadMovimiento.GenerarMovimiento(unidadEnCelda,this,unidadceldasoltar,true);
+                if(unidadMovimiento.GenerarMovimiento(unidadEnCelda,this,unidadceldasoltar,true))
+                {
+                   
+                }
 
             }   
             else     
             {
 
-                unidadMovimiento.GenerarMovimiento(unidadEnCelda,this,unidadceldasoltar,false);
+                if(unidadMovimiento.GenerarMovimiento(unidadEnCelda,this,unidadceldasoltar,false))
+                {
+                  
+                }
 
             }
 
+           
           
        
     }

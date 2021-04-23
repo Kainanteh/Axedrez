@@ -15,6 +15,7 @@ public class Cuadricula : MonoBehaviour
 
 	public Celda celdaPrefab;
     public Celda[] celdas;
+	public List<Unidad> unidades;
 
 	public TextMeshProUGUI celdaEtiquetaPrefab;
 
@@ -175,8 +176,19 @@ public class Cuadricula : MonoBehaviour
 				this.GetComponent<UnidadMovimiento>().NuevoAtaque(UnidadScript,Direccion.SurOeste,1);
 				}
 
+				
+
 			}
 
+			if(UnidadScript.GetTipoUnidad()==TipoUnidad.Rey && unidad.Split('*')[3]=="2")
+			{UnidadScript.UnidadJugador.reyCelda = GameObject.Find("Celda " + unidad.Split('*')[0] + " " + unidad.Split('*')[1])
+			.GetComponent<Celda>();}
+			else if(UnidadScript.GetTipoUnidad()==TipoUnidad.Rey && unidad.Split('*')[3]=="1")
+			{UnidadScript.UnidadJugador.reyCelda = GameObject.Find("Celda " + unidad.Split('*')[0] + " " + unidad.Split('*')[1])
+			.GetComponent<Celda>();}
+
+
+			unidades.Add(UnidadScript);
 		 }
 
 		

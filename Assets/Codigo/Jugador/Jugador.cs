@@ -7,10 +7,14 @@ public class Jugador : MonoBehaviour
 
     public int idJugador;
 
+    public Celda reyCelda;
+
     void Start()
     {
 
         
     }
+
+    
 
 }

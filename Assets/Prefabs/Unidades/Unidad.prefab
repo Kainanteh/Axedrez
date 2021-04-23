@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1315410350060389363}
   - component: {fileID: 8308215763090977012}
+  - component: {fileID: 8290312535294530846}
   m_Layer: 8
   m_Name: Unidad
   m_TagString: Untagged
@@ -44,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918bfce2272bac94aad335b0407221c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  celdaIniciost: 
+  UnidadJugador: {fileID: 0}
   tipoUnidad: 0
   MovimientoConAtaque: 1
   MovimientoDirecto: 0
@@ -115,6 +116,18 @@ MonoBehaviour:
     limiteAtaqueFila: 0
     direccionUnidadColumna: 4
     limiteAtaqueColumna: 0
+--- !u!114 &8290312535294530846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4870991435836319095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 693a368ff28d4304f81889d30d7829cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6814766470511128475
 GameObject:
   m_ObjectHideFlags: 0

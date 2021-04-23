@@ -14,14 +14,20 @@ public class UnidadMovimiento : MonoBehaviour
         public Celda cinicio;
         public Celda cobjetivo;
 
-        public Movimiento(Celda cinicio, Celda cobjetivo) : this()
+        public Unidad uinicio;
+
+        public Unidad uobjetivo;
+
+        public Movimiento(Celda cinicio, Celda cobjetivo, Unidad uinicio, Unidad uobjetivo)
         {
             this.cinicio = cinicio;
             this.cobjetivo = cobjetivo;
+            this.uinicio = uinicio;
+            this.uobjetivo = uobjetivo;
         }
     }
 
-    [SerializeField] List<Movimiento> movimientos;
+    public List<Movimiento> movimientos;
 
     void Start()
     {
@@ -33,12 +39,25 @@ public class UnidadMovimiento : MonoBehaviour
 
     }
 
+    /*
+
+
+    ██╗   ██╗███╗   ██╗██╗██████╗  █████╗ ██████╗ ███████╗███████╗
+    ██║   ██║████╗  ██║██║██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔════╝
+    ██║   ██║██╔██╗ ██║██║██║  ██║███████║██║  ██║█████╗  ███████╗
+    ██║   ██║██║╚██╗██║██║██║  ██║██╔══██║██║  ██║██╔══╝  ╚════██║
+    ╚██████╔╝██║ ╚████║██║██████╔╝██║  ██║██████╔╝███████╗███████║
+     ╚═════╝ ╚═╝  ╚═══╝╚═╝╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝
+                                                                
+
+
+    */
+
     public bool GenerarMovimiento(Unidad unidad, Celda cinicio, Celda cobjetivo, bool ataque)
     {
 
         
-        if(ataque == true && cobjetivo.GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); return false;} //Si la unidad es del mismo jugador
-        
+        //Debug.Log(JaqueCalculo(GameObject.Find("Celda 5 5").GetComponent<Celda>()));
         switch(unidad.GetTipoUnidad())
         {
             case TipoUnidad.Peon:
@@ -49,7 +68,7 @@ public class UnidadMovimiento : MonoBehaviour
                     if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == true)
                     {
 
-                        
+                        movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
                     
                         cobjetivo.GetUnidadEnCelda().gameObject.SetActive(false);cobjetivo.SetUnidadEnCelda(null);  // La unidad objetiva se esconde 
                                                                                                                     // y se quita la ref en la celda objetivo
@@ -59,11 +78,12 @@ public class UnidadMovimiento : MonoBehaviour
                             
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
-                        movimientos.Add(new Movimiento(cinicio,cobjetivo));
+                        
+                        JaqueCalculo();
                         Turnos.CambiarTurno();
                         
 
-                        if(unidad.UnidadJugador.idJugador == 2)// !!! EL CAMBIO DEL MOVIMIENTO DEBERIA SER UNA VEZ
+                        if(unidad.UnidadJugador.idJugador == 2)// !!! EL CAMBIO DEL MOVIMIENTO DEBERIA SER solo UNA VEZ
                         {
                         NuevoMovimiento(unidad,Direccion.Sur,1);
                         
@@ -75,13 +95,15 @@ public class UnidadMovimiento : MonoBehaviour
                         }
                         
                     }
-                    if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == false)
+                    else if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == false)
                     {
 
+                        movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
 
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
-                        movimientos.Add(new Movimiento(cinicio,cobjetivo));
+                        
+                        JaqueCalculo();
                         Turnos.CambiarTurno();
                         //Primer movimiento realizado, se pasa el movimento en la direccion Norte o Sur de 2 a 1
                         if(unidad.UnidadJugador.idJugador == 2)
@@ -98,7 +120,8 @@ public class UnidadMovimiento : MonoBehaviour
                     else
                     {
 
-                        cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); 
+                        cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda());
+                        return false;
 
                     }
                 
@@ -112,17 +135,20 @@ public class UnidadMovimiento : MonoBehaviour
                     if(DireccionDirectaUnidad(cobjetivo,cinicio,unidad,false ))
                     {
 
+
+                        movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
+
                         //Debug.Log(ataque);
                         if(ataque == true)
                         {
                         cobjetivo.GetUnidadEnCelda().gameObject.SetActive(false);cobjetivo.SetUnidadEnCelda(null);  // La unidad objetiva se esconde 
                         }                                                                                           // y se quita la ref en la celda objetivo
-
-                                                                                                               
+                                                                                                              
                             
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
-                        movimientos.Add(new Movimiento(cinicio,cobjetivo));
+                        
+                        JaqueCalculo();
                         Turnos.CambiarTurno();
                     
                         
@@ -131,10 +157,107 @@ public class UnidadMovimiento : MonoBehaviour
                     {
 
                         cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); 
-
+                        return false;
+                        
                     }
 
                 
+                break;
+
+            }
+            case TipoUnidad.Rey:
+            {
+
+                    // ENROQUE
+                    if(cobjetivo.GetUnidadEnCelda() != null)
+                    {
+                        if(cobjetivo.GetUnidadEnCelda().GetTipoUnidad()==TipoUnidad.Torre 
+                        && cobjetivo.GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador)
+                        {
+                            
+                            if(unidad.gameObject.GetComponent<UnidadMovimientoEspecial>()
+                            .Enroque(cinicio,cobjetivo,unidad))
+                            {
+
+                                movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
+
+                                // Debug.Log("Enroque");
+                                
+                                int ciniciocolum;       // rey
+                                int cobjetivocolum;     // torre
+
+                                if(cinicio.columna > cobjetivo.columna) // enroque corto
+                                {
+
+                                    ciniciocolum = cinicio.columna-2;
+                                    cobjetivocolum = cobjetivo.columna+2;
+
+                                }
+                                else                                    // enroque largo
+                                {
+
+                                    ciniciocolum = cinicio.columna+2;
+                                    cobjetivocolum = cobjetivo.columna-3;
+
+                                }
+
+                                Celda cinicioenr = GameObject.Find("Celda " + cinicio.fila + " " + ciniciocolum).GetComponent<Celda>();
+                                Celda cobjetivoenr = GameObject.Find("Celda " + cobjetivo.fila + " " + cobjetivocolum).GetComponent<Celda>();
+
+                                cobjetivoenr.SetUnidadEnCelda(cobjetivo.GetUnidadEnCelda()); 
+                                cinicioenr.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); 
+                                cobjetivo.SetUnidadEnCelda(null); 
+                                cinicio.SetUnidadEnCelda(null); 
+                               
+                                Turnos.CambiarTurno();
+                                unidad.UnidadJugador.reyCelda = cobjetivoenr;
+
+                            }
+
+                        }
+
+                    }
+
+                    if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == true)
+                    {
+                    
+                        movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
+
+                        cobjetivo.GetUnidadEnCelda().gameObject.SetActive(false);cobjetivo.SetUnidadEnCelda(null);  // La unidad objetiva se esconde 
+                                                                                                                    // y se quita la ref en la celda objetivo
+
+                                                                                                           
+                            
+                        cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
+                        cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
+                        
+                        JaqueCalculo();
+                        Turnos.CambiarTurno();
+                        unidad.UnidadJugador.reyCelda = cobjetivo;
+                        
+                    }
+                    else if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == false)
+                    {
+
+                        movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
+
+                        cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
+                        cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
+                        
+                        JaqueCalculo();
+                        Turnos.CambiarTurno();
+                        unidad.UnidadJugador.reyCelda = cobjetivo;
+                                           
+
+                    }
+                    else
+                    {
+
+                        cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); 
+                        return false;
+                        
+                    }
+
                 break;
 
             }
@@ -144,7 +267,7 @@ public class UnidadMovimiento : MonoBehaviour
                     if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == true)
                     {
 
-                        
+                        movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
                     
                         cobjetivo.GetUnidadEnCelda().gameObject.SetActive(false);cobjetivo.SetUnidadEnCelda(null);  // La unidad objetiva se esconde 
                                                                                                                     // y se quita la ref en la celda objetivo
@@ -153,18 +276,21 @@ public class UnidadMovimiento : MonoBehaviour
                             
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
-                        movimientos.Add(new Movimiento(cinicio,cobjetivo));
+                        
+                        JaqueCalculo();
                         Turnos.CambiarTurno();
                     
                         
                     }
-                    if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == false)
+                    else if(DireccionUnidad(cobjetivo,cinicio,unidad,false ) && ataque == false)
                     {
 
+                        movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
 
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
-                        movimientos.Add(new Movimiento(cinicio,cobjetivo));
+                        
+                        JaqueCalculo();
                         Turnos.CambiarTurno();
                         //Primer movimiento realizado, se pasa el movimento en la direccion Norte de 2 a 1
                                            
@@ -174,7 +300,8 @@ public class UnidadMovimiento : MonoBehaviour
                     {
 
                         cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); 
-
+                        return false;
+                        
                     }
 
                 break;
@@ -184,6 +311,7 @@ public class UnidadMovimiento : MonoBehaviour
         }
 
 
+        
     
         return true;
 
@@ -228,7 +356,7 @@ public class UnidadMovimiento : MonoBehaviour
                     {
                         
                         // Al mirar la cuadricula de forma ascendente hay que asegurarse de que las direccion Sur,SurEste,SurOeste y Oeste recojan la celda
-                        // mas cercano a la celda de la unidad con la que se hace el calculo
+                        // mas cercana a la celda de la unidad con la que se hace el calculo
 
                         if(celdas[z].fila - cinicio.fila > 0 && celdas[z].columna - cinicio.columna == 0)       // Norte
                         {if(celdabloqNorte==null){celdabloqNorte = celdas[z];}}
@@ -322,6 +450,12 @@ public class UnidadMovimiento : MonoBehaviour
     bool DireccionDirectaUnidad(Celda celda, Celda celdainicio, Unidad unidad, bool calculo)
     {
 
+        if(calculo == false 
+        && celda.GetUnidadEnCelda()!=null 
+        && celda.GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador)
+        {celdainicio.SetUnidadEnCelda(celdainicio.GetUnidadEnCelda()); return false;} //Si la unidad es del mismo jugador
+       
+
         Celda[] celdas = cuadricula.GetCeldas();
 
 
@@ -370,7 +504,12 @@ public class UnidadMovimiento : MonoBehaviour
     
     bool DireccionUnidad(Celda celda, Celda celdainicio, Unidad unidad, bool calculo)
     {
-
+        
+        if(calculo == false 
+        && celda.GetUnidadEnCelda()!=null 
+        && celda.GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador)
+        {celdainicio.SetUnidadEnCelda(celdainicio.GetUnidadEnCelda()); return false;} //Si la unidad es del mismo jugador
+        
 
         for (int i = 0; i < unidad.limiteDirMov.Count; i++)
         {
@@ -464,67 +603,70 @@ public class UnidadMovimiento : MonoBehaviour
                                                                                                                        
             */
 
-            if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) == 0             // La celda objetivo es Norte respecto a la celda inicial
-                && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.Norte                               // Norte
-                && (celda.fila-celdainicio.fila)<=unidad.limiteDirAtaq[i].limiteAtaque                      // Limite Movimiento   
-                && celda.GetUnidadEnCelda()!=null)
-                    {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
-                                        else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
-            if(celda.fila - celdainicio.fila < 0  && (celda.columna - celdainicio.columna) == 0  
-                && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.Sur                                  // Sur
-                && (celdainicio.fila-celda.fila)<=unidad.limiteDirAtaq[i].limiteAtaque 
-                && celda.GetUnidadEnCelda()!=null)
-                    {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
-                                        else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
-            if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) > 0 
-                && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.Este                                 // Este
-                && (celda.columna-celdainicio.columna)<=unidad.limiteDirAtaq[i].limiteAtaque
-                && celda.GetUnidadEnCelda()!=null)
-                    {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
-                                        else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
-            if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) < 0 
-                && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.Oeste                                // Oeste
-                && (celdainicio.columna-celda.columna)<=unidad.limiteDirAtaq[i].limiteAtaque
-                && celda.GetUnidadEnCelda()!=null)
-                    {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
-                                        else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
-            if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) > 0 
-                && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna) 
-                && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.NorEste                              // NorEste
-                && (celda.fila-celdainicio.fila)<=unidad.limiteDirAtaq[i].limiteAtaque
-                && (celda.columna-celdainicio.columna)<=unidad.limiteDirAtaq[i].limiteAtaque
-                && celda.GetUnidadEnCelda()!=null)
-                    {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
-                                        else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
-            if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) < 0 
-                && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna)*-1  
-                && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.NorOeste                             // NorOeste
-                && (celdainicio.fila-celda.fila)<=unidad.limiteDirAtaq[i].limiteAtaque
-                && (celdainicio.columna-celda.columna)<=unidad.limiteDirAtaq[i].limiteAtaque
-                && celda.GetUnidadEnCelda()!=null)
-                    {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
-                                        else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
-            if(celda.fila - celdainicio.fila < 0  
-                && (celda.columna - celdainicio.columna) < 0 
-                && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna) 
-                && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.SurOeste                             // SurOeste
-                && (celdainicio.fila-celda.fila)<=unidad.limiteDirAtaq[i].limiteAtaque
-                && (celdainicio.columna-celda.columna)<=unidad.limiteDirAtaq[i].limiteAtaque
-                && celda.GetUnidadEnCelda()!=null)
-                    {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
-                                        else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
-            if(celda.fila - celdainicio.fila < 0  
-                && (celda.columna - celdainicio.columna) > 0 
-                && (celda.fila - celdainicio.fila)*-1==(celda.columna - celdainicio.columna) 
-                && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.SurEste                              // SurEste
-                && (celda.fila-celdainicio.fila)<=unidad.limiteDirAtaq[i].limiteAtaque
-                && (celda.columna-celdainicio.columna)<=unidad.limiteDirAtaq[i].limiteAtaque
-                && celda.GetUnidadEnCelda()!=null)
-                    {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
-                                        else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
+            if(unidad.MovimientoConAtaque==false)
+            {
+
+                if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) == 0             // La celda objetivo es Norte respecto a la celda inicial
+                    && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.Norte                               // Norte
+                    && (celda.fila-celdainicio.fila)<=unidad.limiteDirAtaq[i].limiteAtaque                      // Limite Movimiento   
+                    && celda.GetUnidadEnCelda()!=null)
+                        {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
+                                            else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
+                if(celda.fila - celdainicio.fila < 0  && (celda.columna - celdainicio.columna) == 0  
+                    && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.Sur                                  // Sur
+                    && (celdainicio.fila-celda.fila)<=unidad.limiteDirAtaq[i].limiteAtaque 
+                    && celda.GetUnidadEnCelda()!=null)
+                        {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
+                                            else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
+                if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) > 0 
+                    && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.Este                                 // Este
+                    && (celda.columna-celdainicio.columna)<=unidad.limiteDirAtaq[i].limiteAtaque
+                    && celda.GetUnidadEnCelda()!=null)
+                        {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
+                                            else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
+                if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) < 0 
+                    && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.Oeste                                // Oeste
+                    && (celdainicio.columna-celda.columna)<=unidad.limiteDirAtaq[i].limiteAtaque
+                    && celda.GetUnidadEnCelda()!=null)
+                        {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
+                                            else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
+                if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) > 0 
+                    && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna) 
+                    && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.NorEste                              // NorEste
+                    && (celda.fila-celdainicio.fila)<=unidad.limiteDirAtaq[i].limiteAtaque
+                    && (celda.columna-celdainicio.columna)<=unidad.limiteDirAtaq[i].limiteAtaque
+                    && celda.GetUnidadEnCelda()!=null)
+                        {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
+                                            else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
+                if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) < 0 
+                    && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna)*-1  
+                    && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.NorOeste                             // NorOeste
+                    && (celdainicio.fila-celda.fila)<=unidad.limiteDirAtaq[i].limiteAtaque
+                    && (celdainicio.columna-celda.columna)<=unidad.limiteDirAtaq[i].limiteAtaque
+                    && celda.GetUnidadEnCelda()!=null)
+                        {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
+                                            else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
+                if(celda.fila - celdainicio.fila < 0  
+                    && (celda.columna - celdainicio.columna) < 0 
+                    && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna) 
+                    && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.SurOeste                             // SurOeste
+                    && (celdainicio.fila-celda.fila)<=unidad.limiteDirAtaq[i].limiteAtaque
+                    && (celdainicio.columna-celda.columna)<=unidad.limiteDirAtaq[i].limiteAtaque
+                    && celda.GetUnidadEnCelda()!=null)
+                        {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
+                                            else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
+                if(celda.fila - celdainicio.fila < 0  
+                    && (celda.columna - celdainicio.columna) > 0 
+                    && (celda.fila - celdainicio.fila)*-1==(celda.columna - celdainicio.columna) 
+                    && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.SurEste                              // SurEste
+                    && (celda.fila-celdainicio.fila)<=unidad.limiteDirAtaq[i].limiteAtaque
+                    && (celda.columna-celdainicio.columna)<=unidad.limiteDirAtaq[i].limiteAtaque
+                    && celda.GetUnidadEnCelda()!=null)
+                        {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
+                                            else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
 
 
-                
+            }
        
 
             /*
@@ -600,7 +742,7 @@ public class UnidadMovimiento : MonoBehaviour
 
     public void ReiniciarCalculo()
     {
-
+        
         Celda[] celdas = cuadricula.GetCeldas();
 
         for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
@@ -613,6 +755,139 @@ public class UnidadMovimiento : MonoBehaviour
 
 
     }
+
+    /*
+
+         ██╗ █████╗  ██████╗ ██╗   ██╗███████╗███████╗
+         ██║██╔══██╗██╔═══██╗██║   ██║██╔════╝██╔════╝
+         ██║███████║██║   ██║██║   ██║█████╗  ███████╗
+    ██   ██║██╔══██║██║▄▄ ██║██║   ██║██╔══╝  ╚════██║
+    ╚█████╔╝██║  ██║╚██████╔╝╚██████╔╝███████╗███████║
+    ╚════╝ ╚═╝  ╚═╝ ╚══▀▀═╝  ╚═════╝ ╚══════╝╚══════╝
+                                                    
+
+    */
+
+    public void JaqueCalculo() // Para saber si alguna unidad esta poniendo en jaque al rey de cada Jugador
+    {
+
+        Celda[] celdas = cuadricula.GetCeldas();
+
+        Turno TurnoScript = cuadricula.GetComponent<Turno>();
+
+      
+
+            foreach(Jugador jugadores in TurnoScript.Jugadores)
+            {
+                jugadores.GetComponent<MateJaque>().Jaque = false;
+            }
+    
+
+            for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
+            {
+                
+                if(celdas[i].GetUnidadEnCelda()==null){continue;}
+
+                foreach(Jugador jugadores in TurnoScript.Jugadores)
+                {
+
+                    if(celdas[i].GetUnidadEnCelda().MovimientoDirecto == false)
+                    {
+                        if(DireccionUnidad(jugadores.reyCelda,celdas[i],celdas[i].GetUnidadEnCelda() ,false))
+                        {
+                        
+            
+                            jugadores.GetComponent<MateJaque>().Jaque = true;
+                      
+                            // return;
+                        }
+
+
+                    }
+                    else
+                    {
+                        //Debug.Log(celdas[i].gameObject.name + " a " + jugadorOponente.reyCelda.gameObject.name);
+                        if(DireccionDirectaUnidad(jugadores.reyCelda,celdas[i],celdas[i].GetUnidadEnCelda() ,false))
+                        {
+                        
+                            jugadores.GetComponent<MateJaque>().Jaque = true;
+                            
+                            // return;
+                        }
+
+                    }
+
+                }
+
+            }
+
+    
+
+    }
+
+
+    public bool JaqueCalculo(Celda cAmenazada) // Para saber si una celda en concreto esta siendo amenazada
+    {
+
+        Celda[] celdas = cuadricula.GetCeldas();
+
+        Turno TurnoScript = cuadricula.GetComponent<Turno>();
+
+      
+
+            for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
+            {
+                
+                if(celdas[i].GetUnidadEnCelda()==null){continue;}
+                // Debug.Log(TurnoScript.GetJugadorActual());
+                if(celdas[i].GetUnidadEnCelda().UnidadJugador == TurnoScript.GetJugadorActual()){continue;}
+             
+
+                    if(celdas[i].GetUnidadEnCelda().MovimientoDirecto == false)
+                    {
+                        if(DireccionUnidad(cAmenazada,celdas[i],celdas[i].GetUnidadEnCelda() ,false))
+                        {
+                            // Debug.Log(celdas[i].gameObject.name);
+                            return true;
+
+                        }
+
+
+                    }
+                    else
+                    {
+                        //Debug.Log(celdas[i].gameObject.name + " a " + jugadorOponente.reyCelda.gameObject.name);
+                        if(DireccionDirectaUnidad(cAmenazada,celdas[i],celdas[i].GetUnidadEnCelda() ,false))
+                        {
+                        
+                            return true;
+
+                        }
+
+                    }
+
+                
+
+            }
+
+            return false;
+
+    }
+
+
+    /*
+
+
+     █████╗ ███████╗██╗ ██████╗ ███╗   ██╗ █████╗ ██████╗ 
+    ██╔══██╗██╔════╝██║██╔════╝ ████╗  ██║██╔══██╗██╔══██╗
+    ███████║███████╗██║██║  ███╗██╔██╗ ██║███████║██████╔╝
+    ██╔══██║╚════██║██║██║   ██║██║╚██╗██║██╔══██║██╔══██╗
+    ██║  ██║███████║██║╚██████╔╝██║ ╚████║██║  ██║██║  ██║
+    ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝
+                                                        
+
+
+    */
 
     public void NuevoMovimiento(Unidad unidad,Direccion direccion,int nuevoMovimiento)
     {

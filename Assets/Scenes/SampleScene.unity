@@ -634,6 +634,7 @@ GameObject:
   m_Component:
   - component: {fileID: 967898721}
   - component: {fileID: 967898720}
+  - component: {fileID: 967898722}
   m_Layer: 0
   m_Name: Jugador 2
   m_TagString: Untagged
@@ -654,6 +655,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idJugador: 1
+  reyCelda: {fileID: 0}
 --- !u!4 &967898721
 Transform:
   m_ObjectHideFlags: 0
@@ -668,6 +670,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &967898722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967898719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b7ed4ff841473f4ba29f63ff32721a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Jaque: 0
+  JaqueMate: 0
 --- !u!1 &1912698010
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,6 +719,7 @@ MonoBehaviour:
   columnas: 8
   celdaPrefab: {fileID: 2899227230694216579, guid: 615435f4d83b4c645aa3f69a4bb6504c, type: 3}
   celdas: []
+  unidades: []
   celdaEtiquetaPrefab: {fileID: 7437438301819996252, guid: caa0d3af7bd621a4ca549b46e7110e01, type: 3}
   cuadriculaCanvas: {fileID: 43358829}
   Limite: {fileID: 181236685}
@@ -780,6 +797,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2012966867}
   - component: {fileID: 2012966866}
+  - component: {fileID: 2012966868}
   m_Layer: 0
   m_Name: Jugador 1
   m_TagString: Untagged
@@ -800,6 +818,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idJugador: 0
+  reyCelda: {fileID: 0}
 --- !u!4 &2012966867
 Transform:
   m_ObjectHideFlags: 0
@@ -814,3 +833,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2012966868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012966865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b7ed4ff841473f4ba29f63ff32721a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Jaque: 0
+  JaqueMate: 0
