@@ -18,7 +18,7 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
     Cuadricula cuadricula;
   
-    public bool cAmenazada = false;
+    
 
 
     void Awake()
@@ -152,9 +152,7 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
             
             if(this == unidadceldasoltar){return;}      // Si sueltas en la misma celda
 
-              //if(ataque == true && cobjetivo.GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); return false;} //Si la unidad es del mismo jugador
-        
-      
+           
             if(unidadselecsoltar != null) // Si la celda donde sueltas ya tiene unidad POSIBLE ATAQUE
             {
 

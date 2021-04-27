@@ -9,6 +9,23 @@ public class MateJaque : MonoBehaviour
     public bool Jaque = false;
     public bool JaqueMate = false;
  
+    [System.Serializable]public struct MovimientoJaque
+    {
+        public Unidad unidadJaque;
+
+        public Celda celdaJaque;
+        public Celda celdaRey;
+
+        public MovimientoJaque(Unidad unidadJaque, Celda celdaJaque, Celda celdaRey)
+        {
+            this.unidadJaque = unidadJaque;
+            this.celdaJaque = celdaJaque;
+            this.celdaRey = celdaRey;
+        }
+    }
+
+    public List<MovimientoJaque> Jaques;
+
     Cuadricula cuadricula;
     UnidadMovimiento unidadesMov;
 
