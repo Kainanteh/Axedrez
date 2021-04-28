@@ -93,7 +93,7 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
      
 
        
-        unidadMovimiento.CalculoMovimiento( unidadEnCelda,this);
+        unidadMovimiento.CalculoMovimiento( unidadEnCelda,this,false);
         
       
 
@@ -144,10 +144,9 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
           
             if(GetUnidadEnCelda() == null){return;}     // Si esta celda no tiene unidad
             
-               unidadEnCelda.GetComponentsInChildren<SpriteRenderer>()[0].sortingOrder = 5; 
+            unidadEnCelda.GetComponentsInChildren<SpriteRenderer>()[0].sortingOrder = 5; 
 
-
-            if(unidadEnCelda.UnidadJugador != GameObject.Find("Cuadricula").GetComponent<Turno>().GetJugadorActual()) //Si no es el turno del jugador
+            if(unidadEnCelda.UnidadJugador != cuadricula.GetComponent<Turno>().GetJugadorActual()) //Si no es el turno del jugador
             {return;}
             
             if(this == unidadceldasoltar){return;}      // Si sueltas en la misma celda
@@ -172,6 +171,18 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
             }
 
+            if(cuadricula.GetComponent<Turno>().GetJugadorActual().gameObject.GetComponent<MateJaque>().Jaque == true)
+            {
+                // Debug.Log(cuadricula.GetComponent<Turno>().GetJugadorActual().gameObject.name);
+                unidadMovimiento.JaqueMateCalculo(cuadricula.GetComponent<Turno>().GetJugadorActual().reyCelda.GetUnidadEnCelda(),cuadricula.GetComponent<Turno>().GetJugadorActual().reyCelda); 
+                // Si el rey no tiene movimientos Y 
+                // la unidad que esta poniendo en jaque al rey no esta amenazada Y 
+                // no se puede bloquear el jaque con una unidad del rey que esta en jaque
+
+                
+
+            }
+          
            
           
        

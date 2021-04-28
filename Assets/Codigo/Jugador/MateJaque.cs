@@ -24,18 +24,18 @@ public class MateJaque : MonoBehaviour
         }
     }
 
-    public List<MovimientoJaque> Jaques;
+    public MovimientoJaque jaqueMovimiento;
 
-    Cuadricula cuadricula;
-    UnidadMovimiento unidadesMov;
+    // Cuadricula cuadricula;
+    // UnidadMovimiento unidadesMov;
 
-    void Start()
-    {
+    // void Start()
+    // {
 
-        cuadricula = GameObject.Find("Cuadricula").GetComponent<Cuadricula>();
-        unidadesMov = GameObject.Find("Cuadricula").GetComponent<UnidadMovimiento>();
+    //     cuadricula = GameObject.Find("Cuadricula").GetComponent<Cuadricula>();
+    //     unidadesMov = GameObject.Find("Cuadricula").GetComponent<UnidadMovimiento>();
 
-    }
+    // }
 
     // public bool esJaque()
     // {
