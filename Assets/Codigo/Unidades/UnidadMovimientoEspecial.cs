@@ -33,7 +33,7 @@ public class UnidadMovimientoEspecial : MonoBehaviour
                 {
                     return false;   //No puede haber unidades entre el rey y la torre
                 }
-                if(unidadMovimiento.JaqueCalculo(ctemp,false))
+                if(unidadMovimiento.JaqueCalculo(ctemp,false,null))
                 {
                     return false;   //Ninguna de las celdas por las que va a pasar el rey puede estar amenazada
                 }
@@ -52,7 +52,7 @@ public class UnidadMovimientoEspecial : MonoBehaviour
                 {
                     return false;   //No puede haber unidades entre el rey y la torre
                 }
-                if(unidadMovimiento.JaqueCalculo(ctemp,false))
+                if(unidadMovimiento.JaqueCalculo(ctemp,false,null))
                 {
                     return false;   //Ninguna de las celdas por las que va a pasar el rey puede estar amenazada
                 }
