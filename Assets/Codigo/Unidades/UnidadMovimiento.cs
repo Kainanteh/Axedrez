@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -231,7 +231,7 @@ public class UnidadMovimiento : MonoBehaviour
                     }
 
                     // Un rey no puede moverse a una celda amenazada
-                    if(JaqueCalculo(cobjetivo,false,null))
+                    if(JaqueCalculo(cobjetivo,false))
                     {
                         cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); 
                         return false;
@@ -297,12 +297,12 @@ public class UnidadMovimiento : MonoBehaviour
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
                         
                         // Ninguna unidad puede moverse poniendo en jaque a su rey
-                        if(JaqueCalculo(Turnos.GetJugadorActual().reyCelda,false,cinicio))
-                        {
+                        // if(JaqueCalculo(Turnos.GetJugadorActual().reyCelda,false,cinicio))
+                        // {
 
-                            cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda());return false;
+                        //     cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda());return false;
 
-                        }
+                        // }
 
                         JaqueCalculo();
                         Turnos.CambiarTurno();
@@ -442,7 +442,7 @@ public class UnidadMovimiento : MonoBehaviour
                         if(celdabloqNorOeste!=null  && celdabloqNorOeste.fila<celdas[i].fila    && celdabloqNorOeste.columna>celdas[i].columna) {continue;}
                         if(celdas[i].GetUnidadEnCelda()!=null 
                         && celdas[i].GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){continue;} // Si la unidad es del mismo jugador
-                        if(cinicio.GetUnidadEnCelda().GetTipoUnidad() == TipoUnidad.Rey && JaqueCalculo(celdas[i],false,null)){continue;} // Si la celda esta amenazada para el rey
+                        if(cinicio.GetUnidadEnCelda().GetTipoUnidad() == TipoUnidad.Rey && JaqueCalculo(celdas[i],false)){continue;} // Si la celda esta amenazada para el rey
                       
                         if(DireccionUnidad(celdas[i],cinicio,unidad ,true,false,jaquecalculo))
                         {movimientosNum++;}
@@ -453,7 +453,7 @@ public class UnidadMovimiento : MonoBehaviour
 
                         if(celdas[i].GetUnidadEnCelda()!=null 
                         && celdas[i].GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){continue;} // Si la unidad es del mismo jugador
-                        if(cinicio.GetUnidadEnCelda().GetTipoUnidad() == TipoUnidad.Rey && JaqueCalculo(celdas[i],false,null)){continue;} // Si la celda esta amenazada para el rey
+                        if(cinicio.GetUnidadEnCelda().GetTipoUnidad() == TipoUnidad.Rey && JaqueCalculo(celdas[i],false)){continue;} // Si la celda esta amenazada para el rey
                         if(DireccionDirectaUnidad(celdas[i],cinicio,unidad ,true,false))
                         {movimientosNum++;}
 
@@ -885,7 +885,7 @@ public class UnidadMovimiento : MonoBehaviour
     }
 
 
-    public bool JaqueCalculo(Celda cAmenazada,bool calculojaquemate, Celda celdamovjaque) // Para saber si una celda en concreto esta siendo amenazada
+    public bool JaqueCalculo(Celda cAmenazada,bool calculojaquemate) // Para saber si una celda en concreto esta siendo amenazada
     {
 
         Celda[] celdas = cuadricula.GetCeldas();
@@ -901,7 +901,6 @@ public class UnidadMovimiento : MonoBehaviour
                 if(celdas[i].GetUnidadEnCelda().GetTipoUnidad()==TipoUnidad.Rey && calculojaquemate==true){continue;}
                 if(celdas[i].GetUnidadEnCelda().UnidadJugador == TurnoScript.GetJugadorActual() && calculojaquemate == false){continue;}
 
-                //if(celdamovjaque!=null){if(celdamovjaque == celdas[i]){continue;}}
 
                 if(celdas[i].GetUnidadEnCelda().MovimientoConAtaque==false){calculoataque=true;}
 
@@ -939,6 +938,60 @@ public class UnidadMovimiento : MonoBehaviour
 
     }
 
+    public bool JaqueBloqueoCalculo(Celda celdaJaque, Celda celdaRey, Celda celdaObjetivo)
+    {
+
+        int filaCeldaJaque      = celdaJaque.fila;
+        int columnaCeldaJaque   = celdaJaque.columna;
+        int filaCeldaRey        = celdaRey.fila;
+        int columnaCeldaRey     = celdaRey.columna;
+     
+        // if(filaCeldaJaque < filaCeldaRey)               {filaCeldaRey--;}
+        // else if (filaCeldaJaque > filaCeldaRey)         {filaCeldaRey++;}
+
+        // if(columnaCeldaJaque < columnaCeldaRey)         {columnaCeldaRey--;}
+        // else if (columnaCeldaJaque > columnaCeldaRey)   {columnaCeldaRey++;}
+
+        
+
+        while(filaCeldaJaque != filaCeldaRey || columnaCeldaJaque != columnaCeldaRey)
+        {
+
+            
+            if(filaCeldaJaque < filaCeldaRey)               {filaCeldaJaque++;}
+            else if (filaCeldaJaque > filaCeldaRey)         {filaCeldaJaque--;}
+
+            if(columnaCeldaJaque < columnaCeldaRey)         {columnaCeldaJaque++;}
+            else if (columnaCeldaJaque > columnaCeldaRey)   {columnaCeldaJaque--;}
+
+
+            Celda celdabloqueo = GameObject.Find("Celda " + filaCeldaJaque + " " + columnaCeldaJaque).GetComponent<Celda>();
+
+            if(celdaObjetivo!=null){if(celdabloqueo != celdaObjetivo){continue;}}
+
+            Celda[] celdas = cuadricula.GetCeldas();
+            for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
+            {
+
+                if(celdas[i].GetUnidadEnCelda()==null){continue;}
+                if(celdas[i].GetUnidadEnCelda().UnidadJugador != Turnos.GetJugadorActual()){continue;}
+
+
+                if(DireccionUnidad(celdabloqueo,celdas[i],celdas[i].GetUnidadEnCelda(),false,false,false) == true)
+                {
+                    // Debug.Log(celdabloqueo.gameObject.name + " " + celdas[i].gameObject.name);
+                    return true;
+                }
+
+            }
+
+        }
+
+    return false;
+
+    }
+
+
     public bool JaqueBloqueoCalculo(Celda celdaJaque, Celda celdaRey, Celda celdaUnidad,Celda celdaObjetivo)
     {
 
@@ -947,26 +1000,28 @@ public class UnidadMovimiento : MonoBehaviour
         int filaCeldaRey        = celdaRey.fila;
         int columnaCeldaRey     = celdaRey.columna;
      
-        if(filaCeldaJaque < filaCeldaRey)               {filaCeldaRey--;}
-        else if (filaCeldaJaque > filaCeldaRey)         {filaCeldaRey++;}
+        // if(filaCeldaJaque < filaCeldaRey)               {filaCeldaRey--;}
+        // else if (filaCeldaJaque > filaCeldaRey)         {filaCeldaRey++;}
 
-        if(columnaCeldaJaque < columnaCeldaRey)         {columnaCeldaRey--;}
-        else if (columnaCeldaJaque > columnaCeldaRey)   {columnaCeldaRey++;}
+        // if(columnaCeldaJaque < columnaCeldaRey)         {columnaCeldaRey--;}
+        // else if (columnaCeldaJaque > columnaCeldaRey)   {columnaCeldaRey++;}
+
+        
 
         while(filaCeldaJaque != filaCeldaRey || columnaCeldaJaque != columnaCeldaRey)
         {
 
+            
             if(filaCeldaJaque < filaCeldaRey)               {filaCeldaJaque++;}
             else if (filaCeldaJaque > filaCeldaRey)         {filaCeldaJaque--;}
 
             if(columnaCeldaJaque < columnaCeldaRey)         {columnaCeldaJaque++;}
             else if (columnaCeldaJaque > columnaCeldaRey)   {columnaCeldaJaque--;}
 
-            
 
             Celda celdabloqueo = GameObject.Find("Celda " + filaCeldaJaque + " " + columnaCeldaJaque).GetComponent<Celda>();
 
-            //Debug.Log("Celda " + celdabloqueo.fila + " " + celdabloqueo.columna);
+            // Debug.Log(celdabloqueo + " " + celdaUnidad);
 
             if(celdaObjetivo!=null){if(celdabloqueo != celdaObjetivo){continue;}}
 
@@ -1005,25 +1060,25 @@ public class UnidadMovimiento : MonoBehaviour
                 if(jugadores == Turnos.GetJugadorActual())
                 {
                     // La unidad que amenaza al rey no esta amenazada
-                    if(JaqueCalculo(jugadores.GetComponent<MateJaque>().jaqueMovimiento.celdaJaque,true,null) == false)
+                    if(JaqueCalculo(jugadores.GetComponent<MateJaque>().jaqueMovimiento.celdaJaque,true) == false)
                     {
-                        Celda[] celdas = cuadricula.GetCeldas();
-                        for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
-                        {
+                        // Celda[] celdas = cuadricula.GetCeldas();
+                        // for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
+                        // {
 
-                            if(celdas[i].GetUnidadEnCelda()==null){continue;}
-                            if(celdas[i].GetUnidadEnCelda().UnidadJugador == Turnos.GetJugadorActual()){continue;}
+                        //     if(celdas[i].GetUnidadEnCelda()==null){continue;}
+                        //     if(celdas[i].GetUnidadEnCelda().UnidadJugador != Turnos.GetJugadorActual()){continue;}
 
                             // No hay ninguna unidad que pueda bloquear el jaque
                             if(JaqueBloqueoCalculo(jugadores.GetComponent<MateJaque>().jaqueMovimiento.celdaJaque,Turnos.GetJugadorActual().reyCelda, 
-                            celdas[i],null))
+                            null) == false)
                             {
 
                             Debug.Log("JAQUEMATE");
 
                             }
 
-                        }
+                        // }
 
                     }
 

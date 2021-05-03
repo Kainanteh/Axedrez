@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MateJaque : MonoBehaviour
 {
-
-
     public bool Jaque = false;
     public bool JaqueMate = false;
  
@@ -22,6 +20,7 @@ public class MateJaque : MonoBehaviour
             this.celdaJaque = celdaJaque;
             this.celdaRey = celdaRey;
         }
+        
     }
 
     public MovimientoJaque jaqueMovimiento;
