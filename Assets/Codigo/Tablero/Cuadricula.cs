@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-
+// AXEDREZ
 public class Cuadricula : MonoBehaviour
 {
 
