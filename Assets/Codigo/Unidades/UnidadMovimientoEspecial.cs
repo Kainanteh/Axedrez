@@ -7,12 +7,28 @@ public class UnidadMovimientoEspecial : MonoBehaviour
  
     UnidadMovimiento unidadMovimiento;
 
+    Transform InterfazPromocion;
+
     void Awake()
     {
 
         unidadMovimiento = GameObject.Find("Cuadricula").GetComponent<UnidadMovimiento>();
+        InterfazPromocion = GameObject.Find("IntPromocion").GetComponent<Transform>();
+
+        InterfazPromocion.gameObject.GetComponent<Renderer>().enabled = false;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Renderer>()[1].enabled = false;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Renderer>()[2].enabled = false;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Renderer>()[3].enabled = false;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Renderer>()[4].enabled = false;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Collider2D>()[0].enabled = false;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Collider2D>()[1].enabled = false;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Collider2D>()[2].enabled = false;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Collider2D>()[3].enabled = false;
+
 
     }
+
+    
 
     public bool Enroque(Celda cinicio,Celda cobjetivo,Unidad unidad)
     {
@@ -81,6 +97,40 @@ public class UnidadMovimientoEspecial : MonoBehaviour
             }
 
         return true;
+
+    }
+
+    public void Promocion(Celda cPromocion)
+    {
+
+        if(cPromocion.GetUnidadEnCelda().UnidadJugador.idJugador == 1)
+        {
+
+            InterfazPromocion.position = new Vector3(cPromocion.gameObject.transform.position.x,cPromocion.gameObject.transform.position.y-1.5f,0f);
+        
+        }
+        else if(cPromocion.GetUnidadEnCelda().UnidadJugador.idJugador == 2)
+        {
+
+            InterfazPromocion.position = new Vector3(cPromocion.gameObject.transform.position.x,cPromocion.gameObject.transform.position.y+1.5f,0f);
+
+        }
+
+        InterfazPromocion.gameObject.GetComponent<Renderer>().enabled = true;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Renderer>()[1].enabled = true;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Renderer>()[2].enabled = true;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Renderer>()[3].enabled = true;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Renderer>()[4].enabled = true;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Collider2D>()[0].enabled = true;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Collider2D>()[1].enabled = true;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Collider2D>()[2].enabled = true;
+            InterfazPromocion.gameObject.GetComponentsInChildren<Collider2D>()[3].enabled = true;
+
+        unidadMovimiento.enPromocion = true;
+        unidadMovimiento.cEnPromocion = cPromocion;
+
+        // Debug.Log(InterfazPromocion);
+        // Debug.Log("Promocionado!");
 
     }
 

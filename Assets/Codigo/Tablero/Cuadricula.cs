@@ -22,6 +22,7 @@ public class Cuadricula : MonoBehaviour
 	[SerializeField] private Canvas cuadriculaCanvas;
 
 	public Transform Limite;
+	// public RectTransform Interfaz;
 
 	public Color32 ColorNegras;
 	public Color32 ColorBlancas;
@@ -32,9 +33,10 @@ public class Cuadricula : MonoBehaviour
 
 	//	| 0 (fila) * 0 (columna) * 0 (id unidad) * 0 (jugador blanco o negro) |
 	private string semilla = 
-	"/0*0*2*1/0*1*1*1/0*2*3*1/0*3*5*1/0*4*4*1/0*5*3*1/0*6*1*1/0*7*2*1/1*0*0*1/1*1*0*1/1*2*0*1/1*3*0*1/1*4*0*1/1*5*0*1/1*6*0*1/1*7*0*1/7*0*2*2/7*1*1*2/7*2*3*2/7*3*5*2/7*4*4*2/7*5*3*2/7*6*1*2/7*7*2*2/6*0*0*2/6*1*0*2/6*2*0*2/6*3*0*2/6*4*0*2/6*5*0*2/6*6*0*2/6*7*0*2";
+	// "/0*0*2*1/0*1*1*1/0*2*3*1/0*3*5*1/0*4*4*1/0*5*3*1/0*6*1*1/0*7*2*1/1*0*0*1/1*1*0*1/1*2*0*1/1*3*0*1/1*4*0*1/1*5*0*1/1*6*0*1/1*7*0*1/7*0*2*2/7*1*1*2/7*2*3*2/7*3*5*2/7*4*4*2/7*5*3*2/7*6*1*2/7*7*2*2/6*0*0*2/6*1*0*2/6*2*0*2/6*3*0*2/6*4*0*2/6*5*0*2/6*6*0*2/6*7*0*2";
 	// "/1*1*5*1/2*1*0*1/4*1*0*2/5*1*5*2"; // 2 peones 2 reyes
 	//"/2*0*5*1/5*1*2*2/3*1*2*1/7*7*5*2/"; // Posicion bloqueo jaque 1 rey 2 torres
+	"/2*0*5*1/5*1*0*1/3*1*0*2/7*7*5*2/";
 
 
 	/*
@@ -64,7 +66,8 @@ public class Cuadricula : MonoBehaviour
 		cuadriculaCanvas.transform.position = new Vector2(((float)(columnas-1)/2)*-1,((float)(filas-1)/2)*-1); // Para centrar la cuadricula
 		
 		// Los limites se calculan segun el tablero
-		Limite.localScale = new Vector3((float)columnas+0.5f,(float)filas+0.5f,0f); 
+		Limite.localScale = new Vector3((float)columnas+0.5f,(float)filas+0.5f,0f);
+		// Interfaz.localScale = new Vector3((float)columnas+5f,(float)filas+0.5f,0f);
 		
 		BoxCollider2D PantallaLimiteOeste 	= GameObject.Find("PantallaLimite").GetComponents<BoxCollider2D>()[0];
 		BoxCollider2D PantallaLimiteNorte 	= GameObject.Find("PantallaLimite").GetComponents<BoxCollider2D>()[1];
@@ -78,7 +81,7 @@ public class Cuadricula : MonoBehaviour
 		PantallaLimiteEste.offset 	= new Vector2((float)columnas,PantallaLimiteEste.offset.y);
 		PantallaLimiteEste.size		= new Vector2((float)columnas,(float)filas);
 		PantallaLimiteSur.offset 	= new Vector2(PantallaLimiteSur.offset.x,(float)filas*-1);
-		PantallaLimiteSur.size	= new Vector2((float)columnas+16f,(float)filas);
+		PantallaLimiteSur.size		= new Vector2((float)columnas+16f,(float)filas);
 	
 
 		celdas = new Celda[filas * columnas];
@@ -91,13 +94,13 @@ public class Cuadricula : MonoBehaviour
 			}
 		}
 		
-		
+		Semillero();
 
 	}
 	void Start () 
 	{
 
-		Semillero();
+		
 
 	}
 	
@@ -114,7 +117,8 @@ public class Cuadricula : MonoBehaviour
 		celda.gameObject.name = "Celda " + y.ToString() + " " + x.ToString(); 
 		celda.fila = y;
 		celda.columna = x;
-
+		
+		if(y == 0 || y == filas-1){celda.celdaPromocion = true;}
 	
 		if((x + y)%2 == 0 ) // Si es par color "negro" si es impar color "blanco"
 		{
@@ -180,15 +184,15 @@ public class Cuadricula : MonoBehaviour
 
 				if(UnidadScript.GetTipoUnidad()==TipoUnidad.Peon) // Los peones blancos tienen que moverse S y atacar SE SO
 				{
+
 				this.GetComponent<UnidadMovimiento>().NuevoMovimiento(UnidadScript,Direccion.Norte,0); 
 				this.GetComponent<UnidadMovimiento>().NuevoMovimiento(UnidadScript,Direccion.Sur,2);
 				this.GetComponent<UnidadMovimiento>().NuevoAtaque(UnidadScript,Direccion.NorEste,0);
 				this.GetComponent<UnidadMovimiento>().NuevoAtaque(UnidadScript,Direccion.NorOeste,0);
 				this.GetComponent<UnidadMovimiento>().NuevoAtaque(UnidadScript,Direccion.SurEste,1);
 				this.GetComponent<UnidadMovimiento>().NuevoAtaque(UnidadScript,Direccion.SurOeste,1);
-				}
 
-				
+				}
 
 			}
 
@@ -199,11 +203,9 @@ public class Cuadricula : MonoBehaviour
 			{UnidadScript.UnidadJugador.reyCelda = GameObject.Find("Celda " + unidad.Split('*')[0] + " " + unidad.Split('*')[1])
 			.GetComponent<Celda>();}
 
-
 			unidades.Add(UnidadScript);
-		 }
 
-		
+		 }
 
 	}
 

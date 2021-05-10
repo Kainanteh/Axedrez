@@ -18,8 +18,11 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
     Cuadricula cuadricula;
   
-    
+    AudioSource audioSource;
+    AudioSistema audioSistema;
 
+
+    public bool celdaPromocion = false;
 
     void Awake()
     {
@@ -32,7 +35,8 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
     {
 
         cuadricula  = GameObject.Find("Cuadricula").GetComponent<Cuadricula>();
-      
+        audioSource = GameObject.Find("AudioSource").GetComponent<AudioSource>();
+        audioSistema = GameObject.Find("AudioSource").GetComponent<AudioSistema>();
 
     }
 
@@ -54,22 +58,17 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
     public void OnPointerClick(PointerEventData eventData)
     {
-
-                        
-            RaycastHit2D hitInfo = OnControlRay();
+           
+        RaycastHit2D hitInfo = OnControlRay();
             
-            if (!hitInfo)
-            {
-                return;
-            }
+        if (!hitInfo)
+        {
+            return;
+        }
 
-            if(unidadEnCelda == null){return;}
+        if(unidadEnCelda == null){return;}
 
-     
-
-            unidadEnCelda.gameObject.transform.position = transform.position;
-            
-
+        unidadEnCelda.gameObject.transform.position = transform.position;
 
     }
 
@@ -83,19 +82,14 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
             return;
         }
 
-
         if(unidadEnCelda == null){return;}
 
         if(unidadEnCelda.UnidadJugador != GameObject.Find("Cuadricula").GetComponent<Turno>().GetJugadorActual())
         {return;}
 
         unidadEnCelda.gameObject.transform.position = new Vector3(hitInfo.point.x,hitInfo.point.y,0f);
-     
 
-       
         unidadMovimiento.CalculoMovimiento( unidadEnCelda,this,false);
-        
-      
 
     }
 
@@ -117,17 +111,13 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
         unidadEnCelda.gameObject.transform.position = new Vector3(hitInfo.point.x,hitInfo.point.y,0f);
        
         unidadEnCelda.GetComponentsInChildren<SpriteRenderer>()[0].sortingOrder = 25; // El sprite seleccionado tiene que estar por encima de todo lo demas
-        
+
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
 
-            
-
             unidadMovimiento.ReiniciarCalculo(); // Se reinicia en todas las celdas los sprite de movimiento y ataque
-
-           
 
             RaycastHit2D hitInfo = OnControlRay();
 
@@ -157,7 +147,14 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
                 if(unidadMovimiento.GenerarMovimiento(unidadEnCelda,this,unidadceldasoltar,true))
                 {
-                   
+
+                  
+                }
+                else
+                {
+
+                    audioSource.PlayOneShot(audioSistema.audioMovimentoError);
+
                 }
 
             }   
@@ -166,26 +163,28 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
                 if(unidadMovimiento.GenerarMovimiento(unidadEnCelda,this,unidadceldasoltar,false))
                 {
-                  
+
+             
+                }
+                else
+                {
+
+                    audioSource.PlayOneShot(audioSistema.audioMovimentoError);
+
                 }
 
             }
 
             if(cuadricula.GetComponent<Turno>().GetJugadorActual().gameObject.GetComponent<MateJaque>().Jaque == true)
             {
-                // Debug.Log(cuadricula.GetComponent<Turno>().GetJugadorActual().gameObject.name);
+
                 unidadMovimiento.JaqueMateCalculo(cuadricula.GetComponent<Turno>().GetJugadorActual().reyCelda.GetUnidadEnCelda(),cuadricula.GetComponent<Turno>().GetJugadorActual().reyCelda); 
                 // Si el rey no tiene movimientos Y 
                 // la unidad que esta poniendo en jaque al rey no esta amenazada Y 
                 // no se puede bloquear el jaque con una unidad del rey que esta en jaque
 
-                
-
             }
-          
-           
-          
-       
+
     }
 
     private RaycastHit2D OnControlRay()
@@ -193,11 +192,9 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
             Vector2 pos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             RaycastHit2D hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(pos), Vector2.zero);
-            
-            
+
             return hitInfo;
 
     }
 
-    
 }

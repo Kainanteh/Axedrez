@@ -90,6 +90,13 @@ public class Unidad : MonoBehaviour
 
     }
 
+    public void SetTipo(TipoUnidad nuevoTipo)
+    {
+
+        tipoUnidad = nuevoTipo;
+
+    }
+
 
 
 
