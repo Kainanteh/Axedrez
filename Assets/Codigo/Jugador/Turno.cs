@@ -12,7 +12,17 @@ public class Turno : MonoBehaviour
 
     void Start()
     {
-        jugadorActual = GameObject.Find("Jugador 2").GetComponent<Jugador>();
+
+        foreach(Jugador jugadores in Jugadores)
+        {
+            if(jugadores.miColor == ColorJugador.Blancas)
+            {
+                jugadorActual = jugadores;break;
+            }
+            // jugadorActual = GameObject.Find("Jugador 2").GetComponent<Jugador>();
+
+        }
+
     }
 
     public Jugador GetJugadorActual()

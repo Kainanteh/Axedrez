@@ -122,9 +122,9 @@ public class UnidadMovimiento : MonoBehaviour
 
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null);                         // Esta celda ya no tiene unidad
-
-                        JaqueCalculo();
+                        
                         Turnos.CambiarTurno();
+                        JaqueCalculo();
 
                         if(unidad.UnidadJugador.idJugador == 2)// !!! EL CAMBIO DEL MOVIMIENTO DEBERIA SER solo UNA VEZ
                         {
@@ -156,8 +156,8 @@ public class UnidadMovimiento : MonoBehaviour
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
 
-                        JaqueCalculo();
                         Turnos.CambiarTurno();
+                        JaqueCalculo();
 
                         //Primer movimiento realizado, se pasa el movimento en la direccion Norte o Sur de 2 a 1
                         if(unidad.UnidadJugador.idJugador == 2)
@@ -191,7 +191,7 @@ public class UnidadMovimiento : MonoBehaviour
             }
             case TipoUnidad.Caballo:
             {
-
+                    
                     if(DireccionDirectaUnidad(cobjetivo,cinicio,unidad,false,false ))
                     {
 
@@ -200,15 +200,17 @@ public class UnidadMovimiento : MonoBehaviour
                         if(ataque == true)
                         {
 
-                        cobjetivo.GetUnidadEnCelda().gameObject.SetActive(false);cobjetivo.SetUnidadEnCelda(null);  // La unidad objetiva se esconde 
+                        cobjetivo.GetUnidadEnCelda().gameObject.SetActive(false);
+                        cobjetivo.SetUnidadEnCelda(null);  // La unidad objetiva se esconde y se quita la ref en la celda objetivo
 
-                        }                                                                                           // y se quita la ref en la celda objetivo
+                        }                                                                                           
 
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
                         
-                        JaqueCalculo();
+                        
                         Turnos.CambiarTurno();
+                        JaqueCalculo();
 
                     }
                     else 
@@ -269,6 +271,7 @@ public class UnidadMovimiento : MonoBehaviour
 
                                 Turnos.CambiarTurno();
                                 unidad.UnidadJugador.reyCelda = cobjetivoenr;
+                                
 
                                 return true;
 
@@ -298,9 +301,9 @@ public class UnidadMovimiento : MonoBehaviour
                         cinicio.SetUnidadEnCelda(null);                         // Esta celda ya no tiene unidad
                         
                         unidad.UnidadJugador.reyCelda = cobjetivo;
-                        JaqueCalculo();
-                        Turnos.CambiarTurno();
                         
+                        Turnos.CambiarTurno();
+                        JaqueCalculo();
 
                     }
                     else if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false ) && ataque == false)
@@ -312,8 +315,9 @@ public class UnidadMovimiento : MonoBehaviour
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
 
                         unidad.UnidadJugador.reyCelda = cobjetivo;
-                        JaqueCalculo();
+                        
                         Turnos.CambiarTurno();
+                        JaqueCalculo();
 
                     }
                     else
@@ -342,8 +346,9 @@ public class UnidadMovimiento : MonoBehaviour
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null);                         // Esta celda ya no tiene unidad
 
-                        JaqueCalculo();
+                        
                         Turnos.CambiarTurno();
+                        JaqueCalculo();
 
                     }
                     else if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false ) && ataque == false)
@@ -354,8 +359,9 @@ public class UnidadMovimiento : MonoBehaviour
                         cobjetivo.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); // La celda donde muevo la unidad ahora tiene esa unidad
                         cinicio.SetUnidadEnCelda(null);                         // Esta celda ya no tiene unidad
 
-                        JaqueCalculo();
+                        
                         Turnos.CambiarTurno();
+                        JaqueCalculo();
 
                     }
                     else
@@ -537,7 +543,7 @@ public class UnidadMovimiento : MonoBehaviour
         && celda.GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador 
         && calculojaque == false)
         {celdainicio.SetUnidadEnCelda(celdainicio.GetUnidadEnCelda()); return false;} //Si la unidad es del mismo jugador
-
+        
         Celda[] celdas = cuadricula.GetCeldas();
 
         for (int i = 0; i < unidad.limiteDirDirec.Count; i++)
@@ -569,7 +575,7 @@ public class UnidadMovimiento : MonoBehaviour
                 case Direccion.Oeste:   {tColum = celdainicio.columna - unidad.limiteDirDirec[i].limiteAtaqueColumna;break;}
 
             }
-
+            
             if(tFila == celda.fila && tColum == celda.columna)                
                 {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
                 else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}
@@ -900,7 +906,7 @@ public class UnidadMovimiento : MonoBehaviour
                     }
                     else
                     {
-                       Debug.Log(celdas[i].gameObject.name + " " + jugadores.reyCelda.gameObject.name);
+                       
                         // if(jugadores == TurnoScript.GetJugadorActual()){continue;}
                         if(DireccionDirectaUnidad(jugadores.reyCelda,celdas[i],celdas[i].GetUnidadEnCelda() ,false,false))
                         {
@@ -1325,6 +1331,19 @@ public class UnidadMovimiento : MonoBehaviour
 
         UnidadScript.UnidadJugador = cEnPromocion.GetUnidadEnCelda().UnidadJugador;
         UnidadScript.UnidadJugador.idJugador = cEnPromocion.GetUnidadEnCelda().UnidadJugador.idJugador;
+
+        cEnPromocion.GetUnidadEnCelda().gameObject.SetActive(false);
+		
+
+        //if(UnidadScript.UnidadJugador.idJugador!=1) // Blancas
+        if(UnidadScript.UnidadJugador.miColor == ColorJugador.Blancas) // Blancas
+		{
+            
+
+			SpriteRenderer UnidadSpriteRend = UnidadObject.GetComponentsInChildren<SpriteRenderer>()[0];
+			UnidadSpriteRend.sprite = cuadricula.UnidadesSprite[unidaDePromo]; // Cambio de negro a blanco
+
+        }
 
         UnidadScript.SetCelda(cEnPromocion.gameObject.name);
 

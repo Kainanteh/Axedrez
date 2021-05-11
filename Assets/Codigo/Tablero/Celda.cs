@@ -10,7 +10,6 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
     public int columna;
     
 
-
     [SerializeField] UnidadMovimiento unidadMovimiento;
 
     [SerializeField] Unidad unidadEnCelda = null;
