@@ -245,19 +245,42 @@ public class UnidadMovimiento : MonoBehaviour
 
                                 int ciniciocolum;       // rey
                                 int cobjetivocolum;     // torre
-
-                                if(cinicio.columna > cobjetivo.columna) // enroque corto
+                                if(Turnos.GetJugadorActual().miColor == ColorJugador.Blancas && Turnos.GetJugadorActual().idJugador == 1)
                                 {
 
-                                    ciniciocolum = cinicio.columna-2;
-                                    cobjetivocolum = cobjetivo.columna+2;
+                                    if(cinicio.columna > cobjetivo.columna) // enroque largo
+                                    {
+                                    
+                                        ciniciocolum = cinicio.columna-2;
+                                        cobjetivocolum = cobjetivo.columna+3;
+                                        
+                                    }
+                                    else                                    // enroque largo
+                                    {
+
+                                        ciniciocolum = cinicio.columna+2;
+                                        cobjetivocolum = cobjetivo.columna-2;
+
+                                    }
 
                                 }
-                                else                                    // enroque largo
+                                else
                                 {
 
-                                    ciniciocolum = cinicio.columna+2;
-                                    cobjetivocolum = cobjetivo.columna-3;
+                                    if(cinicio.columna > cobjetivo.columna) // enroque corto
+                                    {
+                                    
+                                        ciniciocolum = cinicio.columna-2;
+                                        cobjetivocolum = cobjetivo.columna+2;
+                                        
+                                    }
+                                    else                                    // enroque largo
+                                    {
+
+                                        ciniciocolum = cinicio.columna+2;
+                                        cobjetivocolum = cobjetivo.columna-3;
+
+                                    }
 
                                 }
 

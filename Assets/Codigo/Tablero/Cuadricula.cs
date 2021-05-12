@@ -207,7 +207,7 @@ public class Cuadricula : MonoBehaviour
 
 
 			UnidadScript.UnidadJugador = GameObject.Find("Jugador "+int.Parse(unidad.Split('*')[3])).GetComponent<Jugador>();
-			UnidadScript.UnidadJugador.idJugador = int.Parse(unidad.Split('*')[3]);
+			UnidadScript.UnidadJugador.idJugador = int.Parse(unidad.Split('*')[3]); // ???
 
 			if(unidad.Split('*')[3]=="1" && UnidadScript.UnidadJugador.miColor == ColorJugador.Blancas)
 			{
