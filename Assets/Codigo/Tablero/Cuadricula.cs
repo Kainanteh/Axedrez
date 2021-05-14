@@ -34,9 +34,10 @@ public class Cuadricula : MonoBehaviour
 	//	| 0 (fila) * 0 (columna) * 0 (id unidad) * 0 (jugador blanco o negro) |
 	private string semilla = 
 	"/0*0*2*1/0*1*1*1/0*2*3*1/0*3*5*1/0*4*4*1/0*5*3*1/0*6*1*1/0*7*2*1/1*0*0*1/1*1*0*1/1*2*0*1/1*3*0*1/1*4*0*1/1*5*0*1/1*6*0*1/1*7*0*1/7*0*2*2/7*1*1*2/7*2*3*2/7*3*5*2/7*4*4*2/7*5*3*2/7*6*1*2/7*7*2*2/6*0*0*2/6*1*0*2/6*2*0*2/6*3*0*2/6*4*0*2/6*5*0*2/6*6*0*2/6*7*0*2";
-	// "/1*1*5*1/2*1*0*1/4*1*0*2/5*1*5*2"; // 2 peones 2 reyes
+	// "/1*1*5*1/2*1*0*1/4*1*0*2/5*1*5*2";  // 2 peones 2 reyes
 	// "/2*0*5*1/5*1*2*2/3*1*2*1/7*7*5*2/"; // Posicion bloqueo jaque 1 rey 2 torres
-	// "/2*0*5*1/5*1*0*1/3*1*0*2/7*7*5*2/";
+	// "/2*0*5*1/5*1*0*1/3*1*0*2/7*7*5*2/"; // Promocion ejemplo
+	//"/2*0*5*1/5*1*2*1/3*1*2*1/7*7*5*2/";
 
 
 	/*
@@ -49,6 +50,8 @@ public class Cuadricula : MonoBehaviour
 		Peon 	-> 0
 
 	*/
+
+	public bool Debugeando = false; // la ciudad
 
 	public Celda[] GetCeldas()
 	{
@@ -207,9 +210,9 @@ public class Cuadricula : MonoBehaviour
 
 
 			UnidadScript.UnidadJugador = GameObject.Find("Jugador "+int.Parse(unidad.Split('*')[3])).GetComponent<Jugador>();
-			UnidadScript.UnidadJugador.idJugador = int.Parse(unidad.Split('*')[3]); // ???
+			UnidadScript.UnidadJugador.idJugador = int.Parse(unidad.Split('*')[3]);
 
-			if(unidad.Split('*')[3]=="1" && UnidadScript.UnidadJugador.miColor == ColorJugador.Blancas)
+			if(unidad.Split('*')[3]=="1" && UnidadScript.UnidadJugador.miColor == ColorJugador.Blancas && Debugeando == false)
 			{
 
 				if(UnidadScript.GetTipoUnidad()==TipoUnidad.Reina)
@@ -228,7 +231,7 @@ public class Cuadricula : MonoBehaviour
 				}
 
 			}
-			else if(unidad.Split('*')[3]=="2" && UnidadScript.UnidadJugador.miColor == ColorJugador.Negras)
+			else if(unidad.Split('*')[3]=="2" && UnidadScript.UnidadJugador.miColor == ColorJugador.Negras && Debugeando == false)
 			{
 				
 				if(UnidadScript.GetTipoUnidad()==TipoUnidad.Reina)
@@ -283,13 +286,18 @@ public class Cuadricula : MonoBehaviour
 
 				if(UnidadScript.GetTipoUnidad()==TipoUnidad.Rey && unidad.Split('*')[3]=="2")
 				{
-					if(UnidadScript.UnidadJugador.miColor == ColorJugador.Negras)
+					if(UnidadScript.UnidadJugador.miColor == ColorJugador.Negras && Debugeando == false)
 					{
 						int celdabl = int.Parse(unidad.Split('*')[1])+1;
 						UnidadScript.UnidadJugador.reyCelda = GameObject.Find("Celda " + unidad.Split('*')[0] + " " + celdabl)
 						.GetComponent<Celda>();
 					}
 					else if(UnidadScript.UnidadJugador.miColor == ColorJugador.Blancas)
+					{
+						UnidadScript.UnidadJugador.reyCelda = GameObject.Find("Celda " + unidad.Split('*')[0] + " " + unidad.Split('*')[1])
+						.GetComponent<Celda>();
+					}
+					else
 					{
 						UnidadScript.UnidadJugador.reyCelda = GameObject.Find("Celda " + unidad.Split('*')[0] + " " + unidad.Split('*')[1])
 						.GetComponent<Celda>();
@@ -306,12 +314,17 @@ public class Cuadricula : MonoBehaviour
 						.GetComponent<Celda>();
 					
 					}
-					else if(UnidadScript.UnidadJugador.miColor == ColorJugador.Blancas)
+					else if(UnidadScript.UnidadJugador.miColor == ColorJugador.Blancas && Debugeando == false)
 					{
 						int celdabl = int.Parse(unidad.Split('*')[1])+1;
 						UnidadScript.UnidadJugador.reyCelda = GameObject.Find("Celda " + unidad.Split('*')[0] + " " + celdabl)
 						.GetComponent<Celda>();
 
+					}
+					else
+					{
+						UnidadScript.UnidadJugador.reyCelda = GameObject.Find("Celda " + unidad.Split('*')[0] + " " + unidad.Split('*')[1])
+						.GetComponent<Celda>();
 					}
 
 				

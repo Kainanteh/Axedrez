@@ -183,6 +183,13 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
                 // no se puede bloquear el jaque con una unidad del rey que esta en jaque
 
             }
+            else
+            {
+
+                unidadMovimiento.ReyAhogado();
+                // No esta en jaque
+                // No hay ninguna unidad (rey incluido) que pueda hacer movimientos ==> TABLAS
+            }
 
     }
 

@@ -70,10 +70,19 @@ public class UnidadMovimiento : MonoBehaviour
 
         if(enPromocion == true){return false;}
 
+        // Una unidad no puede moverse u atacar poniendo en jaque a su rey
+        if(unidad.GetTipoUnidad()!=TipoUnidad.Rey && JaqueCalculo(Turnos.GetJugadorActual().reyCelda,false,cinicio,cobjetivo) == true)
+        {
+
+            cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda());return false;
+               
+        }
+
         // Hay que impedir el movimento cuando hay un jaque, excepto...
         if(Turnos.GetJugadorActual().GetComponent<MateJaque>().Jaque == true)
         {
-            
+               
+
             // El jaque se puede resolver bloqueando a la unidad que esta amenazando al rey 
             if(JaqueBloqueoCalculo(Turnos.GetJugadorActual().GetComponent<MateJaque>().jaqueMovimiento.celdaJaque,
             Turnos.GetJugadorActual().reyCelda,cinicio,cobjetivo) ||
@@ -89,18 +98,8 @@ public class UnidadMovimiento : MonoBehaviour
             {}else{cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda());return false;} 
 
         }
-        else
-        {
-
-            // Una unidad no puede moverse u atacar poniendo en jaque a su rey
-            if(unidad.GetTipoUnidad()!=TipoUnidad.Rey && JaqueCalculo(Turnos.GetJugadorActual().reyCelda,false,cinicio,cobjetivo) == true)
-            {
-
-                cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda());return false;
-               
-            }
-
-        }
+     
+     
         
         switch(unidad.GetTipoUnidad())
         {
@@ -245,7 +244,8 @@ public class UnidadMovimiento : MonoBehaviour
 
                                 int ciniciocolum;       // rey
                                 int cobjetivocolum;     // torre
-                                if(Turnos.GetJugadorActual().miColor == ColorJugador.Blancas && Turnos.GetJugadorActual().idJugador == 1)
+                                if(Turnos.GetJugadorActual().miColor == ColorJugador.Blancas && Turnos.GetJugadorActual().idJugador == 1
+                                || Turnos.GetJugadorActual().miColor == ColorJugador.Negras && Turnos.GetJugadorActual().idJugador == 2)
                                 {
 
                                     if(cinicio.columna > cobjetivo.columna) // enroque largo
@@ -292,8 +292,9 @@ public class UnidadMovimiento : MonoBehaviour
                                 cobjetivo.SetUnidadEnCelda(null); 
                                 cinicio.SetUnidadEnCelda(null); 
 
+                                unidad.UnidadJugador.reyCelda = cinicioenr;
                                 Turnos.CambiarTurno();
-                                unidad.UnidadJugador.reyCelda = cobjetivoenr;
+                               
                                 
 
                                 return true;
@@ -533,7 +534,7 @@ public class UnidadMovimiento : MonoBehaviour
                         if(celdas[i].GetUnidadEnCelda()!=null 
                         && celdas[i].GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){continue;} 
 
-                         // Si la celda esta amenazada para el rey
+                        // Si la celda esta amenazada para el rey
                         if(cinicio.GetUnidadEnCelda().GetTipoUnidad() == TipoUnidad.Rey && JaqueCalculo(celdas[i],false,null,null)){continue;}
 
                         if(DireccionDirectaUnidad(celdas[i],cinicio,unidad ,true,false))
@@ -1213,6 +1214,50 @@ public class UnidadMovimiento : MonoBehaviour
         }
   
        ReiniciarCalculo();
+
+    }
+
+    /*
+        
+    ██████╗ ███████╗██╗   ██╗     █████╗ ██╗  ██╗ ██████╗  ██████╗  █████╗ ██████╗  ██████╗ 
+    ██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔══██╗██║  ██║██╔═══██╗██╔════╝ ██╔══██╗██╔══██╗██╔═══██╗
+    ██████╔╝█████╗   ╚████╔╝     ███████║███████║██║   ██║██║  ███╗███████║██║  ██║██║   ██║
+    ██╔══██╗██╔══╝    ╚██╔╝      ██╔══██║██╔══██║██║   ██║██║   ██║██╔══██║██║  ██║██║   ██║
+    ██║  ██║███████╗   ██║       ██║  ██║██║  ██║╚██████╔╝╚██████╔╝██║  ██║██████╔╝╚██████╔╝
+    ╚═╝  ╚═╝╚══════╝   ╚═╝       ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝  ╚═════╝ 
+                                                                                            
+    */
+
+    //No esta en jaque Y no hay ninguna unidad (rey incluido) que pueda hacer movimientos ==> TABLAS
+    public void ReyAhogado()
+    {
+
+        bool sinmovimientos = true;
+
+        Celda[] celdas = cuadricula.GetCeldas();
+
+        for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
+        {
+
+            if(celdas[i].GetUnidadEnCelda()==null){continue;}
+            if(celdas[i].GetUnidadEnCelda().UnidadJugador == Turnos.GetJugadorActual()){
+                // Debug.Log(celdas[i].GetUnidadEnCelda() + " " + CalculoMovimiento(celdas[i].GetUnidadEnCelda(),celdas[i],true));
+                if(CalculoMovimiento(celdas[i].GetUnidadEnCelda(),celdas[i],false) != 0)
+                {
+
+                    sinmovimientos = false;
+                    break;
+
+                }
+            }
+
+        }
+
+        if(sinmovimientos)
+        {
+            Debug.Log("Rey Ahogado TABLAS");
+        }
+     
 
     }
 

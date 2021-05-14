@@ -73,7 +73,7 @@ public class UnidadMovimientoEspecial : MonoBehaviour
                     return false;   //Ninguna de las celdas por las que va a pasar el rey puede estar amenazada
                 }
 
-            }        
+            }
 
         }
 
