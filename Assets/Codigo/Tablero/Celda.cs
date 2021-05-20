@@ -88,7 +88,7 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
 
         unidadEnCelda.gameObject.transform.position = new Vector3(hitInfo.point.x,hitInfo.point.y,0f);
 
-        unidadMovimiento.CalculoMovimiento( unidadEnCelda,this,false);
+        unidadMovimiento.CalculoMovimiento( unidadEnCelda,this,false,false);
 
     }
 
@@ -177,7 +177,8 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
             if(cuadricula.GetComponent<Turno>().GetJugadorActual().gameObject.GetComponent<MateJaque>().Jaque == true)
             {
 
-                unidadMovimiento.JaqueMateCalculo(cuadricula.GetComponent<Turno>().GetJugadorActual().reyCelda.GetUnidadEnCelda(),cuadricula.GetComponent<Turno>().GetJugadorActual().reyCelda); 
+                unidadMovimiento.JaqueMateCalculo(cuadricula.GetComponent<Turno>().GetJugadorActual().reyCelda.GetUnidadEnCelda(),
+                cuadricula.GetComponent<Turno>().GetJugadorActual().reyCelda); 
                 // Si el rey no tiene movimientos Y 
                 // la unidad que esta poniendo en jaque al rey no esta amenazada Y 
                 // no se puede bloquear el jaque con una unidad del rey que esta en jaque
@@ -186,7 +187,8 @@ public class Celda : MonoBehaviour,IPointerClickHandler, IDragHandler, IEndDragH
             else
             {
 
-                unidadMovimiento.ReyAhogado();
+                // unidadMovimiento.ReyAhogado();
+                // unidadMovimiento.ReiniciarCalculo();
                 // No esta en jaque
                 // No hay ninguna unidad (rey incluido) que pueda hacer movimientos ==> TABLAS
             }

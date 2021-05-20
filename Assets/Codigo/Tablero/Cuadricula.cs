@@ -38,6 +38,7 @@ public class Cuadricula : MonoBehaviour
 	// "/2*0*5*1/5*1*2*2/3*1*2*1/7*7*5*2/"; // Posicion bloqueo jaque 1 rey 2 torres
 	// "/2*0*5*1/5*1*0*1/3*1*0*2/7*7*5*2/"; // Promocion ejemplo
 	//"/2*0*5*1/5*1*2*1/3*1*2*1/7*7*5*2/";
+	// "/6*0*2*1/0*5*2*1/0*0*5*1/7*6*5*2/";
 
 
 	/*

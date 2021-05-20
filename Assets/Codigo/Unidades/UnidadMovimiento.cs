@@ -71,7 +71,7 @@ public class UnidadMovimiento : MonoBehaviour
         if(enPromocion == true){return false;}
 
         // Una unidad no puede moverse u atacar poniendo en jaque a su rey
-        if(unidad.GetTipoUnidad()!=TipoUnidad.Rey && JaqueCalculo(Turnos.GetJugadorActual().reyCelda,false,cinicio,cobjetivo) == true)
+        if(unidad.GetTipoUnidad()!=TipoUnidad.Rey && JaqueCalculo(Turnos.GetJugadorActual().reyCelda,false,false,cinicio,cobjetivo) == true)
         {
 
             cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda());return false;
@@ -81,16 +81,15 @@ public class UnidadMovimiento : MonoBehaviour
         // Hay que impedir el movimento cuando hay un jaque, excepto...
         if(Turnos.GetJugadorActual().GetComponent<MateJaque>().Jaque == true)
         {
-               
 
             // El jaque se puede resolver bloqueando a la unidad que esta amenazando al rey 
             if(JaqueBloqueoCalculo(Turnos.GetJugadorActual().GetComponent<MateJaque>().jaqueMovimiento.celdaJaque,
             Turnos.GetJugadorActual().reyCelda,cinicio,cobjetivo) ||
 
             // El jaque se puede resolver atacando a la unidad que esta amenazando al rey 
-            DireccionUnidad(Turnos.GetJugadorActual().GetComponent<MateJaque>().jaqueMovimiento.celdaJaque,cinicio,unidad,false,false,false )
+            DireccionUnidad(Turnos.GetJugadorActual().GetComponent<MateJaque>().jaqueMovimiento.celdaJaque,cinicio,unidad,false,false,false,false )
             && cobjetivo == Turnos.GetJugadorActual().GetComponent<MateJaque>().jaqueMovimiento.celdaJaque ||
-            DireccionDirectaUnidad(Turnos.GetJugadorActual().GetComponent<MateJaque>().jaqueMovimiento.celdaJaque,cinicio,unidad,false,false)
+            DireccionDirectaUnidad(Turnos.GetJugadorActual().GetComponent<MateJaque>().jaqueMovimiento.celdaJaque,cinicio,unidad,false,false,false)
             && cobjetivo == Turnos.GetJugadorActual().GetComponent<MateJaque>().jaqueMovimiento.celdaJaque ||
 
             // El jaque puede resolverlo el rey
@@ -107,7 +106,7 @@ public class UnidadMovimiento : MonoBehaviour
             case TipoUnidad.Peon:
             {
 
-                    if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false ) && ataque == true)
+                    if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false,false ) && ataque == true)
                     {
 
                         movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
@@ -147,7 +146,7 @@ public class UnidadMovimiento : MonoBehaviour
                         }
                         
                     }
-                    else if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false ) && ataque == false)
+                    else if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false,false ) && ataque == false)
                     {
 
                         movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
@@ -191,7 +190,7 @@ public class UnidadMovimiento : MonoBehaviour
             case TipoUnidad.Caballo:
             {
                     
-                    if(DireccionDirectaUnidad(cobjetivo,cinicio,unidad,false,false ))
+                    if(DireccionDirectaUnidad(cobjetivo,cinicio,unidad,false,false,false ))
                     {
 
                         movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
@@ -306,14 +305,16 @@ public class UnidadMovimiento : MonoBehaviour
                     }
 
                     // Un rey no puede moverse a una celda amenazada
-                    if(JaqueCalculo(cobjetivo,false,null,null))
+                    if(JaqueCalculo(cobjetivo,false,false,null,null))
                     {
                         cinicio.SetUnidadEnCelda(cinicio.GetUnidadEnCelda()); 
                         return false;
                     }
 
-                    if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false ) && ataque == true)
+                    if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false,false ) && ataque == true)
                     {
+
+                       
 
                         movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
 
@@ -325,13 +326,14 @@ public class UnidadMovimiento : MonoBehaviour
                         cinicio.SetUnidadEnCelda(null);                         // Esta celda ya no tiene unidad
                         
                         unidad.UnidadJugador.reyCelda = cobjetivo;
-                        
+                         ReyAhogado();
                         Turnos.CambiarTurno();
                         JaqueCalculo();
 
                     }
-                    else if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false ) && ataque == false)
+                    else if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false,false ) && ataque == false)
                     {
+
 
                         movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
 
@@ -339,9 +341,11 @@ public class UnidadMovimiento : MonoBehaviour
                         cinicio.SetUnidadEnCelda(null); // Esta celda ya no tiene unidad
 
                         unidad.UnidadJugador.reyCelda = cobjetivo;
-                        
+                       
+                        ReyAhogado(); 
                         Turnos.CambiarTurno();
                         JaqueCalculo();
+                        
 
                     }
                     else
@@ -358,7 +362,7 @@ public class UnidadMovimiento : MonoBehaviour
             default:
             {
 
-                    if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false ) && ataque == true)
+                    if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false,false ) && ataque == true)
                     {
 
                         movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
@@ -375,7 +379,7 @@ public class UnidadMovimiento : MonoBehaviour
                         JaqueCalculo();
 
                     }
-                    else if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false ) && ataque == false)
+                    else if(DireccionUnidad(cobjetivo,cinicio,unidad,false,false,false,false ) && ataque == false)
                     {
 
                         movimientos.Add(new Movimiento(cinicio,cobjetivo,cinicio.GetUnidadEnCelda(),cobjetivo.GetUnidadEnCelda()));
@@ -430,7 +434,7 @@ public class UnidadMovimiento : MonoBehaviour
 
     */
 
-    public int CalculoMovimiento(Unidad unidad, Celda cinicio, bool jaquecalculo)
+    public int CalculoMovimiento(Unidad unidad, Celda cinicio, bool jaquecalculo, bool ahogadocalculo)
     {
 
         Celda[] celdas = cuadricula.GetCeldas();
@@ -520,11 +524,28 @@ public class UnidadMovimiento : MonoBehaviour
                         if(celdas[i].GetUnidadEnCelda()!=null 
                         && celdas[i].GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){continue;}
                         
-                        // Si la celda esta amenazada para el rey
-                        if(cinicio.GetUnidadEnCelda().GetTipoUnidad() == TipoUnidad.Rey && JaqueCalculo(celdas[i],false,null,null)){continue;} 
+              
+                      
+                        // Debug.Log(" " + celdas[i] + " " + JaqueCalculo(celdas[i],false,ahogadocalculo,null,null));
 
-                        if(DireccionUnidad(celdas[i],cinicio,unidad ,true,false,jaquecalculo))
+                        // Si la celda esta amenazada para el rey
+                        if(cinicio.GetUnidadEnCelda().GetTipoUnidad() == TipoUnidad.Rey 
+                        && JaqueCalculo(celdas[i],false,ahogadocalculo,null,null))
+                        {continue;} 
+                        
+                        
+                        
+                     
+
+                        if(DireccionUnidad(celdas[i],cinicio,unidad ,true,false,jaquecalculo,ahogadocalculo))
                         {movimientosNum++;}
+
+                        // if(ahogadocalculo == true)
+                        // {
+                        //     if(DireccionUnidad(celdas[i],cinicio,unidad ,true,false,jaquecalculo,ahogadocalculo) 
+                        //     && cinicio.GetUnidadEnCelda().UnidadJugador.idJugador==2)
+                        //     {Debug.Log("A : " + cinicio.gameObject.name + " " + celdas[i].gameObject.name);} 
+                        // }
 
                     }
                     else
@@ -532,12 +553,13 @@ public class UnidadMovimiento : MonoBehaviour
 
                         // Si la unidad es del mismo jugador
                         if(celdas[i].GetUnidadEnCelda()!=null 
-                        && celdas[i].GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador){continue;} 
+                        && celdas[i].GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador)
+                        {continue;} 
 
                         // Si la celda esta amenazada para el rey
-                        if(cinicio.GetUnidadEnCelda().GetTipoUnidad() == TipoUnidad.Rey && JaqueCalculo(celdas[i],false,null,null)){continue;}
+                        if(cinicio.GetUnidadEnCelda().GetTipoUnidad() == TipoUnidad.Rey && JaqueCalculo(celdas[i],false,ahogadocalculo,null,null)){continue;}
 
-                        if(DireccionDirectaUnidad(celdas[i],cinicio,unidad ,true,false))
+                        if(DireccionDirectaUnidad(celdas[i],cinicio,unidad ,true,false,ahogadocalculo))
                         {movimientosNum++;}
 
                     }
@@ -545,6 +567,21 @@ public class UnidadMovimiento : MonoBehaviour
                 }
 
     return movimientosNum;
+
+    }
+
+    public void ReiniciarCalculo()
+    {
+        
+        Celda[] celdas = cuadricula.GetCeldas();
+
+        for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
+		{
+            
+            celdas[i].gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = false;
+            celdas[i].gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = false;
+
+        }
 
     }
 
@@ -559,13 +596,14 @@ public class UnidadMovimiento : MonoBehaviour
 
     */
 
-    bool DireccionDirectaUnidad(Celda celda, Celda celdainicio, Unidad unidad, bool calculo,bool calculojaque)
+    bool DireccionDirectaUnidad(Celda celda, Celda celdainicio, Unidad unidad, bool calculo, bool calculojaque, bool calculoahogado)
     {
 
         if(calculo == false 
         && celda.GetUnidadEnCelda()!=null 
         && celda.GetUnidadEnCelda().UnidadJugador == unidad.UnidadJugador 
-        && calculojaque == false)
+        && calculojaque == false
+        && calculoahogado == false)
         {celdainicio.SetUnidadEnCelda(celdainicio.GetUnidadEnCelda()); return false;} //Si la unidad es del mismo jugador
         
         Celda[] celdas = cuadricula.GetCeldas();
@@ -612,7 +650,7 @@ public class UnidadMovimiento : MonoBehaviour
 
     }
 
-    bool DireccionUnidad(Celda celda, Celda celdainicio, Unidad unidad, bool calculo, bool calculoataque, bool calculojaque)
+    bool DireccionUnidad(Celda celda, Celda celdainicio, Unidad unidad, bool calculo, bool calculoataque, bool calculojaque, bool calculoahogado)
     {
        
         if(calculo == false 
@@ -685,18 +723,32 @@ public class UnidadMovimiento : MonoBehaviour
 
                 }
 
+                    // if(calculoahogado==true && celdainicio.GetUnidadEnCelda().GetTipoUnidad() == TipoUnidad.Rey
+                    // && celdainicio.GetUnidadEnCelda().UnidadJugador != Turnos.GetJugadorActual())
+                    // {Debug.Log(celdainicio.gameObject.name + " " + celda.gameObject.name);}
                     // Si hay una unidad bloqueando la direccion devuelve falso
-
-                    if(celdabloqNorte!=null         && unidad.limiteDirMov[i].direccionUnidad == Direccion.Norte    && celdabloqNorte.fila<celda.fila       && celdabloqNorte.columna==celda.columna)   {return false;}
-                    else if(celdabloqNorEste!=null  && unidad.limiteDirMov[i].direccionUnidad == Direccion.NorEste  && celdabloqNorEste.fila<celda.fila     && celdabloqNorEste.columna<celda.columna)  {return false;}
-                    else if(celdabloqEste!=null     && unidad.limiteDirMov[i].direccionUnidad == Direccion.Este     && celdabloqEste.fila==celda.fila       && celdabloqEste.columna<celda.columna)     {return false;} 
-                    else if(celdabloqSurEste!=null  && unidad.limiteDirMov[i].direccionUnidad == Direccion.SurEste  && celdabloqSurEste.fila>celda.fila     && celdabloqSurEste.columna<celda.columna)  {return false;}
-                    else if(celdabloqSur!=null      && unidad.limiteDirMov[i].direccionUnidad == Direccion.Sur      && celdabloqSur.fila>celda.fila         && celdabloqSur.columna==celda.columna)     {return false;}
-                    else if(celdabloqSurOeste!=null && unidad.limiteDirMov[i].direccionUnidad == Direccion.SurOeste && celdabloqSurOeste.fila>celda.fila    && celdabloqSurOeste.columna>celda.columna) {return false;}
-                    else if(celdabloqOeste!=null    && unidad.limiteDirMov[i].direccionUnidad == Direccion.Oeste    && celdabloqOeste.fila==celda.fila      && celdabloqOeste.columna>celda.columna)    {return false;}
-                    else if(celdabloqNorOeste!=null && unidad.limiteDirMov[i].direccionUnidad == Direccion.NorOeste && celdabloqNorOeste.fila<celda.fila    && celdabloqNorOeste.columna>celda.columna) {return false;}
+                    
+                    if(celdabloqNorte!=null         && unidad.limiteDirMov[i].direccionUnidad == Direccion.Norte    
+                    && celdabloqNorte.fila<celda.fila       && celdabloqNorte.columna==celda.columna)   {return false;}
+                    else if(celdabloqNorEste!=null  && unidad.limiteDirMov[i].direccionUnidad == Direccion.NorEste  
+                    && celdabloqNorEste.fila<celda.fila     && celdabloqNorEste.columna<celda.columna)  {return false;}
+                    else if(celdabloqEste!=null     && unidad.limiteDirMov[i].direccionUnidad == Direccion.Este     
+                    && celdabloqEste.fila==celda.fila       && celdabloqEste.columna<celda.columna)     {return false;} 
+                    else if(celdabloqSurEste!=null  && unidad.limiteDirMov[i].direccionUnidad == Direccion.SurEste  
+                    && celdabloqSurEste.fila>celda.fila     && celdabloqSurEste.columna<celda.columna)  {return false;}
+                    else if(celdabloqSur!=null      && unidad.limiteDirMov[i].direccionUnidad == Direccion.Sur      
+                    && celdabloqSur.fila>celda.fila         && celdabloqSur.columna==celda.columna)     {return false;}
+                    else if(celdabloqSurOeste!=null && unidad.limiteDirMov[i].direccionUnidad == Direccion.SurOeste 
+                    && celdabloqSurOeste.fila>celda.fila    && celdabloqSurOeste.columna>celda.columna) {return false;}
+                    else if(celdabloqOeste!=null    && unidad.limiteDirMov[i].direccionUnidad == Direccion.Oeste    
+                    && celdabloqOeste.fila==celda.fila      && celdabloqOeste.columna>celda.columna)    {return false;}
+                    else if(celdabloqNorOeste!=null && unidad.limiteDirMov[i].direccionUnidad == Direccion.NorOeste 
+                    && celdabloqNorOeste.fila<celda.fila    && celdabloqNorOeste.columna>celda.columna) {return false;}
 
             }
+
+            
+       
 
             /*
                         
@@ -710,11 +762,14 @@ public class UnidadMovimiento : MonoBehaviour
                                                                                                                        
             */
 
+       
+
             if(unidad.MovimientoConAtaque==false)
             {
                 if(celda.GetUnidadEnCelda()!=null || calculoataque == true)
                 {
-                if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) == 0             // La celda objetivo es Norte respecto a la celda inicial
+                if(celda.fila - celdainicio.fila > 0  && (celda.columna - celdainicio.columna) == 0             // La celda objetivo es Norte 
+                                                                                                                // respecto a la celda inicial
                     && unidad.limiteDirAtaq[i].direccionUnidad == Direccion.Norte                               // Norte
                     && (celda.fila-celdainicio.fila)<=unidad.limiteDirAtaq[i].limiteAtaque                      // Limite Movimiento   
                     )
@@ -784,7 +839,7 @@ public class UnidadMovimiento : MonoBehaviour
                 }
 
             }
-
+            
             /*
 
             ███╗   ███╗ ██████╗ ██╗   ██╗██╗███╗   ███╗██╗███████╗███╗   ██╗████████╗ ██████╗ 
@@ -815,8 +870,9 @@ public class UnidadMovimiento : MonoBehaviour
             if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) > 0 
                 && unidad.limiteDirMov[i].direccionUnidad == Direccion.Este                                 // Este
                 && (celda.columna-celdainicio.columna)<=unidad.limiteDirMov[i].limiteMovimiento)       
-                    {if(calculo == true){if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
-                                        else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
+                    {if(calculo == true)
+                        {if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
+                        else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
             if(celda.fila - celdainicio.fila == 0  && (celda.columna - celdainicio.columna) < 0 
                 && unidad.limiteDirMov[i].direccionUnidad == Direccion.Oeste                                // Oeste
                 && (celdainicio.columna-celda.columna)<=unidad.limiteDirMov[i].limiteMovimiento)       
@@ -827,7 +883,7 @@ public class UnidadMovimiento : MonoBehaviour
                 && (celda.fila - celdainicio.fila)==(celda.columna - celdainicio.columna)*-1  
                 && unidad.limiteDirMov[i].direccionUnidad == Direccion.NorOeste                             // NorOeste
                 && (celdainicio.fila-celda.fila)<=unidad.limiteDirMov[i].limiteMovimiento
-                && (celdainicio.columna-celda.columna)<=unidad.limiteDirMov[i].limiteMovimiento)    
+                && (celdainicio.columna-celda.columna)<=unidad.limiteDirMov[i].limiteMovimiento)
                     {if(calculo == true && calculojaque == false)
                         {if(celda.GetUnidadEnCelda()==null){celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;}
                         else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
@@ -859,25 +915,13 @@ public class UnidadMovimiento : MonoBehaviour
                         else{celda.gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = true;}}return true;}
 
         }
-
+        // if(calculoahogado == true && celdainicio.GetUnidadEnCelda() != null){
+        //     if(celdainicio.GetUnidadEnCelda().UnidadJugador.idJugador==2){Debug.Log(celdainicio.gameObject.name + " " + celda.gameObject.name);}}
         return false;
 
     }
 
-    public void ReiniciarCalculo()
-    {
-        
-        Celda[] celdas = cuadricula.GetCeldas();
 
-        for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
-		{
-            
-            celdas[i].gameObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = false;
-            celdas[i].gameObject.GetComponentsInChildren<SpriteRenderer>()[2].enabled = false;
-
-        }
-
-    }
 
     /*
 
@@ -917,7 +961,7 @@ public class UnidadMovimiento : MonoBehaviour
                     if(celdas[i].GetUnidadEnCelda().MovimientoDirecto == false)
                     {
                          
-                        if(DireccionUnidad(jugadores.reyCelda,celdas[i],celdas[i].GetUnidadEnCelda() ,false,true,false))
+                        if(DireccionUnidad(jugadores.reyCelda,celdas[i],celdas[i].GetUnidadEnCelda() ,false,true,false,false))
                         {
 
                             MateJaque mj = jugadores.GetComponent<MateJaque>();
@@ -932,7 +976,7 @@ public class UnidadMovimiento : MonoBehaviour
                     {
                        
                         // if(jugadores == TurnoScript.GetJugadorActual()){continue;}
-                        if(DireccionDirectaUnidad(jugadores.reyCelda,celdas[i],celdas[i].GetUnidadEnCelda() ,false,false))
+                        if(DireccionDirectaUnidad(jugadores.reyCelda,celdas[i],celdas[i].GetUnidadEnCelda() ,false,false,false))
                         {
 
                             MateJaque mj = jugadores.GetComponent<MateJaque>();
@@ -951,7 +995,7 @@ public class UnidadMovimiento : MonoBehaviour
     }
 
     // Para saber si una celda en concreto esta siendo amenazada
-    public bool JaqueCalculo(Celda cAmenazada,bool calculojaquemate, Celda cInicioJaque, Celda cobjetivoJaque) 
+    public bool JaqueCalculo(Celda cAmenazada,bool calculojaquemate, bool calculoahogado, Celda cInicioJaque, Celda cobjetivoJaque) 
     {
 
         Celda[] celdas = cuadricula.GetCeldas();
@@ -985,7 +1029,7 @@ public class UnidadMovimiento : MonoBehaviour
                 if(cAmenazada.GetUnidadEnCelda().UnidadJugador == TurnoScript.GetJugadorActual()){continue;}
                 }
                 
-                
+
 
                     if(cInicioJaque != null && cobjetivoJaque !=null)
                     {
@@ -1000,10 +1044,11 @@ public class UnidadMovimiento : MonoBehaviour
 
                         if(celdas[i].GetUnidadEnCelda().MovimientoDirecto == false)
                         {
-                            
-                            if(DireccionUnidad(cAmenazada, celdas[i], celdas[i].GetUnidadEnCelda(), false, calculoataque, calculojaque))
+
+                             
+
+                            if(DireccionUnidad(cAmenazada, celdas[i], celdas[i].GetUnidadEnCelda(), false, calculoataque, calculojaque, calculoahogado))
                             {
-                                
 
                                 if(cInicioJaque != null && cobjetivoJaque !=null)
                                 {
@@ -1014,9 +1059,15 @@ public class UnidadMovimiento : MonoBehaviour
 
                                 }
 
-
+                                // if(calculoahogado == true){Debug.Log(celdas[i].gameObject.name + " " + cAmenazada.gameObject.name + " SI " );}
 
                                 return true;
+
+                            }
+                            else
+                            {
+
+                                // if(calculoahogado == true){Debug.Log(celdas[i].gameObject.name + " " + cAmenazada.gameObject.name + " NO " );}
 
                             }
 
@@ -1025,7 +1076,7 @@ public class UnidadMovimiento : MonoBehaviour
                         {
 
 
-                            if(DireccionDirectaUnidad(cAmenazada, celdas[i], celdas[i].GetUnidadEnCelda(), false, calculojaque))
+                            if(DireccionDirectaUnidad(cAmenazada, celdas[i], celdas[i].GetUnidadEnCelda(), false, calculojaque,calculoahogado))
                             {
                             
                                 if(cInicioJaque != null && cobjetivoJaque !=null)
@@ -1090,7 +1141,7 @@ public class UnidadMovimiento : MonoBehaviour
                 if(celdas[i].GetUnidadEnCelda().MovimientoDirecto == false)
                 {
 
-                    if(DireccionUnidad(celdabloqueo,celdas[i],celdas[i].GetUnidadEnCelda(),false,false,false) == true)
+                    if(DireccionUnidad(celdabloqueo,celdas[i],celdas[i].GetUnidadEnCelda(),false,false,false,false) == true)
                     {
 
                         return true;
@@ -1101,7 +1152,7 @@ public class UnidadMovimiento : MonoBehaviour
                 else
                 {
 
-                    if(DireccionDirectaUnidad(celdabloqueo,celdas[i],celdas[i].GetUnidadEnCelda(),false,false) == true)
+                    if(DireccionDirectaUnidad(celdabloqueo,celdas[i],celdas[i].GetUnidadEnCelda(),false,false,false) == true)
                     {
 
                         return true;
@@ -1142,7 +1193,7 @@ public class UnidadMovimiento : MonoBehaviour
             if(celdaUnidad.GetUnidadEnCelda().MovimientoDirecto == false)
             {
 
-                if(DireccionUnidad(celdabloqueo,celdaUnidad,celdaUnidad.GetUnidadEnCelda(),false,false,false) == true)
+                if(DireccionUnidad(celdabloqueo,celdaUnidad,celdaUnidad.GetUnidadEnCelda(),false,false,false,false) == true)
                 {
 
                     return true;
@@ -1153,7 +1204,7 @@ public class UnidadMovimiento : MonoBehaviour
             else
             {
 
-                if(DireccionDirectaUnidad(celdabloqueo,celdaUnidad,celdaUnidad.GetUnidadEnCelda(),false,false) == true)
+                if(DireccionDirectaUnidad(celdabloqueo,celdaUnidad,celdaUnidad.GetUnidadEnCelda(),false,false,false) == true)
                 {
 
                     return true;
@@ -1183,7 +1234,7 @@ public class UnidadMovimiento : MonoBehaviour
     {
 
         // El rey no tiene movimientos disponibles
-        if(CalculoMovimiento(Turnos.GetJugadorActual().reyCelda.GetUnidadEnCelda(),Turnos.GetJugadorActual().reyCelda,true) == 0)
+        if(CalculoMovimiento(Turnos.GetJugadorActual().reyCelda.GetUnidadEnCelda(),Turnos.GetJugadorActual().reyCelda,true,false) == 0)
         {
 
             foreach(Jugador jugadores in Turnos.Jugadores)
@@ -1193,7 +1244,7 @@ public class UnidadMovimiento : MonoBehaviour
                 {
 
                     // La unidad que amenaza al rey no esta amenazada
-                    if(JaqueCalculo(jugadores.GetComponent<MateJaque>().jaqueMovimiento.celdaJaque,true,null,null) == true)
+                    if(JaqueCalculo(jugadores.GetComponent<MateJaque>().jaqueMovimiento.celdaJaque,true,false,null,null) == true)
                     {
 
                             // No hay ninguna unidad que pueda bloquear el jaque
@@ -1232,32 +1283,44 @@ public class UnidadMovimiento : MonoBehaviour
     public void ReyAhogado()
     {
 
-        bool sinmovimientos = true;
+        // bool sinmovimientos = true;
 
         Celda[] celdas = cuadricula.GetCeldas();
 
-        for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
+        foreach(Jugador jugadores in Turnos.Jugadores)
         {
+            int numMovimentos = 0;
+            for (int i = 0; i < (cuadricula.filas*cuadricula.columnas); i++) 
+            {
 
-            if(celdas[i].GetUnidadEnCelda()==null){continue;}
-            if(celdas[i].GetUnidadEnCelda().UnidadJugador == Turnos.GetJugadorActual()){
-                // Debug.Log(celdas[i].GetUnidadEnCelda() + " " + CalculoMovimiento(celdas[i].GetUnidadEnCelda(),celdas[i],true));
-                if(CalculoMovimiento(celdas[i].GetUnidadEnCelda(),celdas[i],false) != 0)
-                {
+                if(celdas[i].GetUnidadEnCelda()==null){continue;}
+                if(celdas[i].GetUnidadEnCelda().UnidadJugador != jugadores){continue;}
+          
 
-                    sinmovimientos = false;
-                    break;
+                // if(celdas[i].GetUnidadEnCelda().UnidadJugador == Turnos.GetJugadorActual()){
 
-                }
+                    // Debug.Log(celdas[i].GetUnidadEnCelda() + " " + CalculoMovimiento(celdas[i].GetUnidadEnCelda(),celdas[i],false,true));
+                    numMovimentos += CalculoMovimiento(celdas[i].GetUnidadEnCelda(),celdas[i],false,true);
+
+                    // {
+
+                    //     sinmovimientos = false;
+                    //     break;
+
+                    // }
+                // }
+
             }
-
+                // Debug.Log(jugadores.gameObject.name + " " + numMovimentos);
+                if(numMovimentos==0)
+                {
+                    Debug.Log("Rey Ahogado TABLAS");
+                    break;
+                }
         }
 
-        if(sinmovimientos)
-        {
-            Debug.Log("Rey Ahogado TABLAS");
-        }
      
+        ReiniciarCalculo();
 
     }
 
@@ -1388,6 +1451,19 @@ public class UnidadMovimiento : MonoBehaviour
 
     }
 
+    /*
+
+
+    ██████╗ ██████╗  ██████╗ ███╗   ███╗ ██████╗  ██████╗██╗ ██████╗ ███╗   ██╗
+    ██╔══██╗██╔══██╗██╔═══██╗████╗ ████║██╔═══██╗██╔════╝██║██╔═══██╗████╗  ██║
+    ██████╔╝██████╔╝██║   ██║██╔████╔██║██║   ██║██║     ██║██║   ██║██╔██╗ ██║
+    ██╔═══╝ ██╔══██╗██║   ██║██║╚██╔╝██║██║   ██║██║     ██║██║   ██║██║╚██╗██║
+    ██║     ██║  ██║╚██████╔╝██║ ╚═╝ ██║╚██████╔╝╚██████╗██║╚██████╔╝██║ ╚████║
+    ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝ ╚═════╝  ╚═════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+                                                                            
+
+
+    */
 
     public void Promocionado(int unidaDePromo)
     {
